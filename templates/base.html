@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="h-100" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="p-3 text-light bg-dark h-100">
+    <header class="bg-dark position-relative d-flex justify-content-center align-items-center">
+        <div>
+            <h1>
+                MusicFindr    
+            </h1>
+        </div>
+        <div>
+            <button class="btn btn-primary position-absolute end-0 top-0">
+                Sign up
+            </button>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="bg-dark-subtle text-light text-center pb-sm-1 pt-sm-3 sticky-bottom rounded-top-3">
+        <p>&copy; 2024 masters of designing but not thinking.</p>
+    </footer>
+</body>
+</html>
