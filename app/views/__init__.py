@@ -1,4 +1,4 @@
-from app.views.start import StartPage
+from app.views import startPage as start
 from flask import Blueprint
 from markupsafe import escape
 
