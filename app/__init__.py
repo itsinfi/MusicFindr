@@ -73,9 +73,15 @@ def create_app():
     s.vote.VoteService.createVote(1, 1, 2, -1)
     s.vote.VoteService.createVote(1, 1, 1, 1)
     print(s.vote.VoteService.allVotes)
-    s.vote.VoteService.createVote(1, 1, 1, 0)
+    # s.vote.VoteService.createVote(1, 1, 1, 0)
     print(s.vote.VoteService.allVotes)
-    s.vote.VoteService.updateVote(2, 0)
+    # s.vote.VoteService.updateVote(2, 0)
     print(s.vote.VoteService.allVotes)
+    print("DELETION TESTS--------------------------------------------------")
+    # s.vote.VoteService.deleteVote(1)
+    # s.playlist.PlaylistService.deletePlaylist(1)
+    # s.tag.TagService.deleteTag(2)
+    # print(s.playlist.PlaylistService.allPlaylists)
+    s.user.UserService.deleteUser(1)
 
     return app

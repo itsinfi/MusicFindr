@@ -80,15 +80,21 @@ class TagService:
             return
         
         tag.title = title
+        print(f"Deleted tag with id {id}")
         print(TagService.allTags)
         return
     
-    #TODO: Redundanzen auslöschen (zu Votes und Playlists)
     @staticmethod
     def deleteTag(id: int):
+        from app.services import playlist
+        from app.services import vote
         tag = TagService.readTag(id)
         if tag is None:
             print("Tag existiert nicht!")
+            return
+
+        vote.VoteService.deleteAllTagVotes(id) #alle verbundenen Votes löschen
+        playlist.PlaylistService.removeTagFromAllPlaylists(id) #aus allen verbundenen Playlists Referenzierung entfernen
         TagService.allTags.remove(tag)
         print(TagService.allTags)
         return

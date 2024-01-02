@@ -168,5 +168,30 @@ class VoteService:
             return
         
         VoteService.allVotes.remove(vote)
+        print(f"Deleted vote with id {id}")
         print(VoteService.allVotes)   
         return
+    
+    @staticmethod
+    def deleteAllPlaylistVotes(pid: int):
+        for vote in VoteService.allVotes:
+            if (vote.pid == pid):
+                VoteService.deleteVote(vote.id)
+                print(f"Deleted Vote with id {vote.id} connected to playlist with id {pid}")
+        return
+
+    @staticmethod
+    def deleteAllTagVotes(tid: int):
+        for vote in VoteService.allVotes:
+            if (vote.tid == tid):
+                print(f"Deleted Vote with id {vote.id} connected to tag with id {tid}")
+        return
+
+    @staticmethod
+    def deleteAllUserVotes(uid: int):
+        for vote in VoteService.allVotes:
+            if (vote.uid == uid):
+                print(f"Deleted Vote with id {vote.id} connected to user with id {uid}")
+        return
+        
+        

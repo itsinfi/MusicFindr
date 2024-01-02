@@ -113,12 +113,33 @@ class PlaylistService:
         print(PlaylistService.allPlaylists)
         return
     
-    #TODO: Redundanzen auslöschen (zu Tags und zu Votes)
     @staticmethod
     def deletePlaylist(id: int):
+        from app.services import vote
         playlist = PlaylistService.readPlaylist(id)
         if playlist is None:
             print("Playlist existiert nicht!")
+            return
+        
+        vote.VoteService.deleteAllPlaylistVotes(id) #alle verbundenen Votes löschen
         PlaylistService.allPlaylists.remove(playlist)
+        print(f"Deleted playlist with id {id}")
         print(PlaylistService.allPlaylists)
+
+    @staticmethod
+    def removeTagFromAllPlaylists(tid: int):
+        from app.services import tagService
+        for playlist in PlaylistService.allPlaylists:
+            if (PlaylistService.containsTag(playlist.id, tid)):
+                playlist.tags.remove(tid)
+                print(f"Deleted Tag with id {tid} from playlist with id {playlist.id}")
+        return
+    
+    @staticmethod
+    def deleteAllUserPlaylists(uid: int):
+        for playlist in PlaylistService.allPlaylists:
+            if (playlist.createdBy == uid):
+                PlaylistService.deletePlaylist(playlist.id)
+                print(f"Deleted Playlist with id {playlist.id} connected to user with id {uid}")
+        return
     

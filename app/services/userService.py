@@ -88,14 +88,18 @@ class UserService:
         print(UserService.allUsers)
         return
     
-    #TODO: Redundanzen auslöschen (zu Tags, Votes und Playlists)
     @staticmethod
     def deleteUser(id: int):
+        from app.services import playlist
+        from app.services import vote
         user = UserService.readUser(id)
         if user is None:
             print("User does not exist!")
             return
         
+        vote.VoteService.deleteAllUserVotes(id) #alle verbundenen Votes löschen
+        playlist.PlaylistService.deleteAllUserPlaylists(id) #alle erstellten Playlists löschen
         UserService.allUsers.remove(user)
+        print(f"Deleted user with id {id}")
         print(UserService.allUsers)
         return
