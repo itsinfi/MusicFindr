@@ -1,0 +1,24 @@
+{% extends 'wrappers/sadFace.html' %}
+
+{% block title %}404 Page not found{% endblock %}
+
+{% block content %}
+
+<div class="modal fade" id="errorDialog" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="px-sm-3 py-sm-3">
+                <h5 class="modal-title text-dark" id="errorModalLabel">Oops...</h5>
+            </div>
+            <div class="px-sm-3 text-dark">
+                <p>{{ errorMessage }}</p>
+            </div>
+            <div class="px-sm-3 py-sm-3 d-flex justify-content-between">
+                <button type="button" class="btn btn-secondary" onclick="hideDialog()">Close</button>
+                <button type="button" class="btn btn-primary" onclick="navigateBack()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -2,6 +2,10 @@ from datetime import datetime
 from app.models import userModel as u
 from bcrypt import _bcrypt
 
+class UserServiceError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(message)
 
 class UserService:
     allUsers = []
@@ -11,7 +15,7 @@ class UserService:
     def _createUser(id: int, password: str, username: str, createdAt: datetime, updatedAt: datetime):
         if (UserService.userExists(id)):
             print(f"user already exists")
-            return
+            raise Exception("TEEEEEEST")
             
         if (UserService.usernameExists(username)):
             print(f"username already exists")
@@ -52,6 +56,7 @@ class UserService:
                 print(user)
                 return user
         else:
+            raise UserServiceError(f"user with id {id} not found")
             print(f"user with id {id} not found")
             return
 
@@ -92,7 +97,11 @@ class UserService:
     def deleteUser(id: int):
         from app.services import playlist
         from app.services import vote
-        user = UserService.readUser(id)
+        try:
+            user = UserService.readUser(id)
+        except UserServiceError as e:
+            print(e)
+            return
         if user is None:
             print("User does not exist!")
             return
