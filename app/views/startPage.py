@@ -4,3 +4,4 @@ class StartPage:
     @staticmethod
     def getStartPage():
         return render_template('content/start.html')
+    aijbsdkabsdibasdpiobasodibasiodübaüiosd
