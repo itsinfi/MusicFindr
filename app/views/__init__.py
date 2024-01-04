@@ -18,15 +18,11 @@ def profile(uid: int):
     from app.services import userService
     from flask import render_template
     from datetime import datetime
-
+    
     try:
-        test = userService.UserService.readUser(2)
-        if (test is not None):
-            userService.UserService.deleteUser(2)
+        userService.UserService._createUser(2, "bla", "nutzernameeeee", datetime.now(), datetime.now())
     except userService.UserServiceError as e:
         print(e)
-    
-    userService.UserService._createUser(2, "bla", "nutzernameeeee", datetime.now(), datetime.now())
 
     try:
         result = userService.UserService.readUser(int(uid))

@@ -36,66 +36,192 @@ def create_app():
         print(url_for('views.search', query='Cyberpunk'))
         print(url_for('static', filename='style.css'))
 
-    # #ein bisschen CRUD mit Models durchspielen (nur zum Testen)
-    # s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
-    # # s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
-    # # s.user.UserService.createUser('passwort3', 'username1')
-    # # print(s.user.UserService.allUsers)
-    # # s.user.UserService._createUser(2, 'password2', 'username2', datetime.now(), datetime.now())
-    # # s.user.UserService._createUser(3, 'password3', 'username3', datetime.now(), datetime.now())
-    # # s.user.UserService.createUser('hehehehe', 'brotmann')
-    # # print(s.user.UserService.checkPassword('hehehehe', s.user.UserService.readUser(4).password))
-    # # print(s.user.UserService.checkPassword('qehehehe', s.user.UserService.readUser(4).password))
-    # # s.user.UserService.readUser(2)
-    # # s.user.UserService.updateUser(2, 'password2', 'username2')
-    # # print(s.user.UserService.allUsers)
-    # # s.user.UserService.deleteUser(4)
-    # # s.user.UserService.deleteUser(3)
-    # # s.user.UserService.deleteUser(1)
-    # # s.user.UserService.readUser(1)
-    # # print(s.user.UserService.allUsers)
-    # s.playlist.PlaylistService._createPlaylist(1, "link1", "titel1", "beschreibung1", ["Tag1", "Tag2"], s.user.UserService.readUser(1).id, datetime.now(), datetime.now())
-    # # s.playlist.PlaylistService._createPlaylist(1, "link1", "titel1", "beschreibung1", [], s.user.UserService.readUser(1).id, datetime.now(), datetime.now())
-    # # s.playlist.PlaylistService.createPlaylist("link1", "title1", "beschreibung1", [], s.user.UserService.readUser(1).id)
-    # # s.playlist.PlaylistService.playlistExists(1)
-    # # s.playlist.PlaylistService.playlistExists(2)
-    # # s.playlist.PlaylistService.linkExists("link1")
-    # # s.playlist.PlaylistService.linkExists("a")
-    # # s.playlist.PlaylistService.readPlaylist(1)
-    # # s.playlist.PlaylistService.readPlaylist(2)
-    # # s.playlist.PlaylistService.updatePlaylist(1, "1knil", "1letit", "1gnubierhcseb")
-    # # s.playlist.PlaylistService.deletePlaylist(1)
-    # # s.playlist.PlaylistService.playlistExists(1)
-    # s.tag.TagService._createTag(3, "titel1", datetime.now())
-    # # s.tag.TagService._createTag(1,"titel1", datetime.now())
-    # # s.tag.TagService.createTag("titel1")
-    # # s.tag.TagService.tagExists(1)
-    # # s.tag.TagService.tagExists(2)
-    # # s.tag.TagService.titleExists("titel1")
-    # # s.tag.TagService.titleExists("a")
-    # # s.tag.TagService.readTag(1)
-    # # s.tag.TagService.readTag(2)
-    # # s.tag.TagService.updateTag(1,"1eltit")
-    # # s.tag.TagService.deleteTag(1)
-    # # s.tag.TagService.tagExists(1)
-    # # s.playlist.PlaylistService.updatePlaylist(1, "link1", "titel1", "beschreibung1", ["Tag1"])
+    # ein bisschen CRUD mit Models durchspielen (nur zum Testen)
+    # try:
+    #     s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:    
+    #     s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     s.user.UserService.createUser('passwort3', 'username1')
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # print(s.user.UserService.allUsers)
+    # try:
+    #     s.user.UserService._createUser(2, 'password2', 'username2', datetime.now(), datetime.now())
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:    
+    #     s.user.UserService._createUser(3, 'password3', 'username3', datetime.now(), datetime.now())
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     s.user.UserService.createUser('hehehehe', 'brotmann')
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     _uuuuserPW = s.user.UserService.readUser(4).password
+    #     print(s.user.UserService.checkPassword('hehehehe', _uuuuserPW))
+    #     print(s.user.UserService.checkPassword('qehehehe', _uuuuserPW))
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     s.user.UserService.readUser(2)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     s.user.UserService.updateUser(2, 'password2', 'username2')
+    # except s.user.UserServiceError:
+    #     print(e)
+    # print(s.user.UserService.allUsers)
+    # try:
+    #     s.user.UserService.deleteUser(4)
+    # except s.user.UserServiceError:
+    #     print(e)
+    # try:
+    #     s.user.UserService.deleteUser(3)
+    # except s.user.UserServiceError:
+    #     print(e)
+    # try:
+    #     s.user.UserService.deleteUser(1)
+    # except s.user.UserServiceError:
+    #     print(e)
+    # try:
+    #     s.user.UserService.readUser(1)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # print(s.user.UserService.allUsers)
+    # try:
+    #     _id = s.user.UserService.readUser(1).id
+    #     s.playlist.PlaylistService._createPlaylist(1, "link1", "titel1", "beschreibung1", ["Tag1", "Tag2"], _id, datetime.now(), datetime.now())
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     _id = s.user.UserService.readUser(1).id
+    #     s.playlist.PlaylistService._createPlaylist(1, "link1", "titel1", "beschreibung1", [], _id, datetime.now(), datetime.now())
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     _id = s.user.UserService.readUser(1).id
+    #     s.playlist.PlaylistService.createPlaylist("link1", "title1", "beschreibung1", [], _id)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # s.playlist.PlaylistService.playlistExists(1)
+    # s.playlist.PlaylistService.playlistExists(2)
+    # s.playlist.PlaylistService.linkExists("link1")
+    # s.playlist.PlaylistService.linkExists("a")
+    # try:
+    #     s.playlist.PlaylistService.readPlaylist(1)
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # try:
+    #     s.playlist.PlaylistService.readPlaylist(2)
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # try:
+    #     s.playlist.PlaylistService.updatePlaylist(1, "1knil", "1letit", "1gnubierhcseb")
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # try:
+    #     s.playlist.PlaylistService.deletePlaylist(1)
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # s.playlist.PlaylistService.playlistExists(1)
+    # try:
+    #     s.tag.TagService._createTag(3, "titel1", datetime.now())
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # try:
+    #     s.tag.TagService._createTag(1,"titel1", datetime.now())
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # try:
+    #     s.tag.TagService.createTag("titel1")
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # s.tag.TagService.tagExists(1)
+    # s.tag.TagService.tagExists(2)
+    # s.tag.TagService.titleExists("titel1")
+    # s.tag.TagService.titleExists("a")
+    # try:
+    #     s.tag.TagService.readTag(1)
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # try:
+    #     s.tag.TagService.readTag(2)
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # try:
+    #     s.tag.TagService.updateTag(1,"1eltit")
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # try:
+    #     s.tag.TagService.deleteTag(1)
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # s.tag.TagService.tagExists(1)
+    # try:
+    #     s.playlist.PlaylistService.updatePlaylist(1, "titel1", "beschreibung1", ["Tag1"])
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
     # print(s.tag.TagService.allTags)
-    # s.vote.VoteService.createVote(1, 1, 1, 1)
-    # s.vote.VoteService.createVote(1, 1, 2, -1)
-    # s.vote.VoteService.createVote(1, 1, 1, 1)
+    # try:
+    #     s.vote.VoteService.createVote(1, 1, 1, 1)
+    # except s.vote.VoteServiceError as e:
+    #     print(e)
+    # try:
+    #     s.vote.VoteService.createVote(1, 1, 2, -1)
+    # except s.vote.VoteServiceError as e:
+    #     print(e)
+    # try:
+    #     s.vote.VoteService.createVote(1, 1, 1, 1)
+    # except s.vote.VoteServiceError as e:
+    #     print(e)
     # print(s.vote.VoteService.allVotes)
-    # # s.vote.VoteService.createVote(1, 1, 1, 0)
+    # try:
+    #     s.vote.VoteService.createVote(1, 1, 1, 0)
+    # except s.vote.VoteServiceError as e:
+    #     print(e)
     # print(s.vote.VoteService.allVotes)
-    # # s.vote.VoteService.updateVote(2, 0)
+    # try:
+    #     s.vote.VoteService.updateVote(2, 0)
+    # except s.vote.VoteServiceError as e:
+    #     print(e)
     # print(s.vote.VoteService.allVotes)
     # print("DELETION TESTS--------------------------------------------------")
-    # # s.vote.VoteService.deleteVote(1)
-    # # s.playlist.PlaylistService.deletePlaylist(1)
-    # # s.tag.TagService.deleteTag(2)
-    # # print(s.playlist.PlaylistService.allPlaylists)
-    # s.user.UserService.deleteUser(1)
-        
-    # s.user.UserService._createUser(1, "passwort", "username", datetime.now(), datetime.now())
-    # s.user.UserService._createUser(1, "passwort", "username", datetime.now(), datetime.now())
+    # try:
+    #     s.vote.VoteService.deleteVote(1)
+    # except s.vote.VoteServiceError as e:
+    #     print(e)
+    # try:
+    #     s.playlist.PlaylistService.deletePlaylist(1)
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # try:
+    #     s.tag.TagService.deleteTag(2)
+    # except s.tag.TagServiceError as e:
+    #     print(e)
+    # print(s.playlist.PlaylistService.allPlaylists)
+    # try:
+    #     s.user.UserService.deleteUser(1)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     s.user.UserService._createUser(1, "passwort", "username", datetime.now(), datetime.now())
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     s.user.UserService._createUser(1, "passwort", "username", datetime.now(), datetime.now())
+    # except s.user.UserServiceError as e:
+    #     print(e)
 
     return app
