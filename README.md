@@ -6,6 +6,7 @@ What do you need to run the project?
 - install flask -> execute "pip install flask" inside the root folder
 - install bcrypt -> execute "pip install bcrypt" inside the root folder
 - execute "python run.py" inside the root folder
+- can be accessed from here: http://localhost:5000/
 
 
 # Basic Explanation of the code structure
@@ -80,4 +81,9 @@ app/views:
 - define pages and basic ui logic here
 
 
+# Currently testable stuff (05.01.2024)
 
+- crud testing cases (without db connection) -> app/__init__.py
+- 404 handling -> (just open any undefined route)
+- open profile page or dialog if not found (just for testing, change it anytime :)) -> "/profile/<uid>"
+- open start page (just for testing, feel free to change the design and logic :)) -> "/"
