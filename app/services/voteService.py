@@ -149,8 +149,7 @@ class VoteService:
                 return vote
             
         #VoteServiceError, falls nicht gefunden
-        else:
-            raise VoteServiceError(f"Vote with id {id} could not be found or does not exist.")
+        raise VoteServiceError(f"Vote with id {id} could not be found or does not exist.")
 
 
     #########DO WE NEED THIS??????
@@ -160,9 +159,9 @@ class VoteService:
     #         if (vote.uid == uid and vote.pid == pid and vote.tid == tid):
     #             print(vote)
     #             return vote
-    #     else:
-    #         print(f"Vote does not exist so far!")
-    #         return
+    #     
+    #     print(f"Vote does not exist so far!")
+    #     return
 
 
     @staticmethod
@@ -177,8 +176,7 @@ class VoteService:
                 return True
             
         #Ansonsten false returnen
-        else:
-            return False
+        return False
 
 
     @staticmethod
@@ -193,8 +191,7 @@ class VoteService:
                 return True
             
         #Ansonsten false returnen
-        else:
-            return False
+        return False
     
 
     @staticmethod

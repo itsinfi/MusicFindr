@@ -65,7 +65,6 @@ class PlaylistService:
         except PlaylistServiceError as e:
             raise PlaylistServiceError(f"Etwas ist beim Hinzufügen der Tags schief gelaufen.")
 
-        # else:
         # print(f"playlist could not be created")
         return
     
@@ -84,8 +83,7 @@ class PlaylistService:
                 return playlist
             
         #PlaylistServiceError, falls nicht gefunden
-        else:
-            raise PlaylistServiceError(f"Playlist with id {id} could not be found or does not exist.")
+        raise PlaylistServiceError(f"Playlist with id {id} could not be found or does not exist.")
 
 
     def containsTag(id: int, tid: int) -> bool:
@@ -120,8 +118,7 @@ class PlaylistService:
                 return True
             
         #Ansonsten false returnen
-        else:
-            return False
+        return False
 
     
     @staticmethod
@@ -136,8 +133,7 @@ class PlaylistService:
                 return True
             
         #Ansonsten false returnen
-        else:
-            return False
+        return False
 
 
     @staticmethod

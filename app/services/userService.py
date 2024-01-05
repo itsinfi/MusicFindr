@@ -95,8 +95,7 @@ class UserService:
                 return user
         
         #UserServiceError, falls nicht gefunden
-        else:
-            raise UserServiceError(f"User with id {id} could not be found or does not exist.")
+        raise UserServiceError(f"User with id {id} could not be found or does not exist.")
         
 
     @staticmethod
@@ -111,8 +110,7 @@ class UserService:
                 return True
             
         #Ansonsten false returnen
-        else:
-            return False
+        return False
         
     
     @staticmethod
@@ -127,8 +125,7 @@ class UserService:
                 return True
         
         #Ansonsten false returnen
-        else:
-            return False
+        return False
     
 
     @staticmethod

@@ -78,8 +78,7 @@ class TagService:
                 return tag
         
         #TagServiceError, falls nicht gefunden
-        else:
-            raise TagServiceError(f"Tag with id {id} could not be found or does not exist.")
+        raise TagServiceError(f"Tag with id {id} could not be found or does not exist.")
 
 
     @staticmethod
@@ -96,8 +95,7 @@ class TagService:
                 return tag
         
         #TagServiceError, falls nicht gefunden
-        else:
-            raise TagServiceError(f"Tag with title {title} could not be found or does not exist.")
+        raise TagServiceError(f"Tag with title {title} could not be found or does not exist.")
 
 
     @staticmethod
@@ -111,10 +109,8 @@ class TagService:
             if tag.id == id:
                 return True
         
-        #TagServiceError, falls nicht gefunden
-        else:
-            print(f"tag with id {id} not found")
-            return False
+        #TagServiceError, falls nicht gefunden    
+        return False
 
 
     @staticmethod
@@ -129,9 +125,7 @@ class TagService:
                 return True
         
         #TagServiceError, falls nicht gefunden
-        else:
-            print(f"tag with title {title} not found")
-            return False
+        return False
 
     
     ##########DO WE NEED THIS?
