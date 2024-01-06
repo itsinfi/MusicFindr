@@ -153,7 +153,7 @@ class PlaylistService:
         try:
             PlaylistService.updateTags(id, tagStrings)
         except PlaylistServiceError as e:
-            raise PlaylistServiceError(f"Etwas ist beim Hinzufügen der Tags schief gelaufen.")
+            raise PlaylistServiceError(f"Could not add tags to playlist with id {id}")
 
         #TODO: kann später entfernt werden, wird von der Datenbank übernommen
         playlist.updatedAt = datetime.now()
@@ -177,8 +177,10 @@ class PlaylistService:
         for tagTitle in tagTitles:
             
             #Tag erstellen, falls es noch nicht existiert
-            if not (tag.TagService.tagExists):
-                    tag.TagService.createTag(tagTitle)
+            try:
+                tag.TagService.createTag(tagTitle)
+            except tag.TagServiceError as e:
+                print(e)
             
             #Tag auslesen
             try:
@@ -196,6 +198,38 @@ class PlaylistService:
         playlist.tags = tags
         return
     
+
+    @staticmethod
+    def addTag(id: int, tagTitle: str):
+        """
+        adds a tag with tagTitle to playlist with id
+        throws PlaylistServiceError if:
+        - playlist with specified id does not exist
+        - tag could not be found/created
+        """
+        from app.services import tagService as tag
+
+        #Playlist wird ausgelesen (+ Prüfung, ob Playlist existiert)
+        playlist = PlaylistService.readPlaylist(id)
+
+        #Tag erstellen, falls es noch nicht existiert
+        try:
+            tag.TagService.createTag(tagTitle)
+        except tag.TagServiceError as e:
+            print(e)
+        
+        #Tag auslesen
+        try:
+            _t = tag.TagService.findTag(tagTitle)
+        
+        #Falls nicht gefunden, PlaylistError ausgeben
+        except tag.TagServiceError as e:
+            raise PlaylistServiceError(f"Could not add tag {tagTitle} to playlist with id {id}")
+
+        #Tag-ID der Liste in der Playlist ergänzen
+        playlist.tags.append(_t.id)
+        return
+
 
     @staticmethod
     def deletePlaylist(id: int):

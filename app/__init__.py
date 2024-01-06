@@ -37,10 +37,10 @@ def create_app():
         print(url_for('static', filename='style.css'))
 
     # ein bisschen CRUD mit Models durchspielen (nur zum Testen)
-    # try:
-    #     s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
-    # except s.user.UserServiceError as e:
-    #     print(e)
+    try:
+        s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
+    except s.user.UserServiceError as e:
+        print(e)
     # try:    
     #     s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
     # except s.user.UserServiceError as e:
@@ -108,13 +108,13 @@ def create_app():
     #     print(e)
     # except s.user.UserServiceError as e:
     #     print(e)
-    # try:
-    #     _id = s.user.UserService.readUser(1).id
-    #     s.playlist.PlaylistService.createPlaylist("link1", "title1", "beschreibung1", [], _id)
-    # except s.user.UserServiceError as e:
-    #     print(e)
-    # except s.playlist.PlaylistServiceError as e:
-    #     print(e)
+    try:
+        _id = s.user.UserService.readUser(1).id
+        s.playlist.PlaylistService.createPlaylist("link1", "title1", "beschreibung1", [], _id)
+    except s.user.UserServiceError as e:
+        print(e)
+    except s.playlist.PlaylistServiceError as e:
+        print(e)
     # s.playlist.PlaylistService.playlistExists(1)
     # s.playlist.PlaylistService.playlistExists(2)
     # s.playlist.PlaylistService.linkExists("link1")
@@ -136,10 +136,10 @@ def create_app():
     # except s.playlist.PlaylistServiceError as e:
     #     print(e)
     # s.playlist.PlaylistService.playlistExists(1)
-    # try:
-    #     s.tag.TagService._createTag(3, "titel1", datetime.now())
-    # except s.tag.TagServiceError as e:
-    #     print(e)
+    try:
+        s.tag.TagService._createTag(3, "titel1", datetime.now())
+    except s.tag.TagServiceError as e:
+        print(e)
     # try:
     #     s.tag.TagService._createTag(1,"titel1", datetime.now())
     # except s.tag.TagServiceError as e:
@@ -223,5 +223,15 @@ def create_app():
     #     s.user.UserService._createUser(1, "passwort", "username", datetime.now(), datetime.now())
     # except s.user.UserServiceError as e:
     #     print(e)
+    s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", ["titwweel1"])
+    print(s.playlist.PlaylistService.allPlaylists)
+    s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", ["titel1"])
+    print(s.playlist.PlaylistService.allPlaylists)
+    s.playlist.PlaylistService.addTag(1, "titwweel1")
+    print(s.playlist.PlaylistService.allPlaylists)
+    s.playlist.PlaylistService.addTag(1, "bruuuudder")
+    print(s.playlist.PlaylistService.allPlaylists)
+    s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", [])
+    print(s.playlist.PlaylistService.allPlaylists)
 
     return app
