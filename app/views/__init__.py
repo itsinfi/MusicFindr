@@ -1,6 +1,6 @@
 from app.views import startPage
-from app.views import playlistDetail
-from app.views import profile as _profile
+# from app.views import playlistDetail
+from app.views import profileView
 from flask import Blueprint
 from markupsafe import escape
 # from app.components import errorDialog as e
@@ -15,11 +15,11 @@ def start():
 
 @blueprint.route('/profile/<uid>')
 def profile(uid: int):
-    return _profile.ProfileView.loadPage(uid)
+    return profileView.ProfileView.loadPage(uid)
 
-@blueprint.route('/playlist/<pid>')
-def playlist(pid):
-    return playlistDetail.PlaylistDetailView.loadPage(pid)
+# @blueprint.route('/playlist/<pid>')
+# def playlist(pid):
+#     return playlistDetail.PlaylistDetailView.loadPage(pid)
 
 @blueprint.route('/search/<query>')
 def search(query):

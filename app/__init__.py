@@ -32,7 +32,7 @@ def create_app():
     with app.test_request_context():
         print(url_for('views.start'))
         # print(url_for('views.profile', uid = 123))
-        print(url_for('views.playlist', pid = 123))
+        # print(url_for('views.playlist', pid = 123))
         print(url_for('views.search', query='Cyberpunk'))
         print(url_for('static', filename='style.css'))
 
