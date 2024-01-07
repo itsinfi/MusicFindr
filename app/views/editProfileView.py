@@ -1,7 +1,7 @@
 from flask import render_template
 from app.views import view as v
 
-class SignUpView(v.View):
+class EditProfileView(v.View):
     @staticmethod
     def loadPage() -> render_template:
         # from app.services import userService
@@ -10,6 +10,6 @@ class SignUpView(v.View):
         #TODO: add return statement
 
         # try:
-        return render_template('content/signUp.html')
+        return render_template('content/editProfile.html')
         #TODO: add except statement, add custom error type
         # except 

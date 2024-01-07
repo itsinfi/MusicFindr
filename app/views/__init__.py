@@ -2,6 +2,7 @@ from app.views import startPage
 # from app.views import playlistDetail
 from app.views import profileView
 from app.views import signUpView
+from app.views import editProfileView
 from flask import Blueprint
 from markupsafe import escape
 # from app.components import errorDialog as e
@@ -22,6 +23,10 @@ def profile(uid: int):
 def signUp():
     #TODO:
     return signUpView.SignUpView.loadPage()
+
+@blueprint.route('/editProfile')
+def editProfile():
+    return editProfileView.EditProfileView.loadPage()
 
 # @blueprint.route('/playlist/<pid>')
 # def playlist(pid):
