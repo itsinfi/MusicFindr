@@ -1,6 +1,7 @@
 from app.views import startPage
 # from app.views import playlistDetail
 from app.views import profileView
+from app.views import signUpView
 from flask import Blueprint
 from markupsafe import escape
 # from app.components import errorDialog as e
@@ -16,6 +17,11 @@ def start():
 @blueprint.route('/profile/<uid>')
 def profile(uid: int):
     return profileView.ProfileView.loadPage(uid)
+
+@blueprint.route('/signUp')
+def signUp():
+    #TODO:
+    return signUpView.SignUpView.loadPage()
 
 # @blueprint.route('/playlist/<pid>')
 # def playlist(pid):
