@@ -5,6 +5,7 @@ What do you need to run the project?
 - install python vers. 3.12.1 https://www.python.org/downloads/release/python-3121/
 - install flask -> execute "pip install flask" inside the root folder
 - install bcrypt -> execute "pip install bcrypt" inside the root folder
+- install requests -> execute "pip install requests" inside the root folder
 - execute "python run.py" inside the root folder
 - can be accessed from here: http://localhost:5000/
 

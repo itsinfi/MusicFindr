@@ -38,7 +38,8 @@ def create_app():
 
     # ein bisschen CRUD mit Models durchspielen (nur zum Testen)
     try:
-        s.user.UserService._createUser(1, 'password1', 'username1', datetime.now(), datetime.now())
+        s.user.UserService._createUser(1, '1_#passwordPasswordpassword', 'username1', datetime.now(), datetime.now())
+        # print(s.user.UserService.readUser(1))
     except s.user.UserServiceError as e:
         print(e)
     # try:    
@@ -101,13 +102,13 @@ def create_app():
     #     print(e)
     # except s.user.UserServiceError as e:
     #     print(e)
-    # try:
-    #     _id = s.user.UserService.readUser(1).id
-    #     s.playlist.PlaylistService._createPlaylist(1, "link1", "titel1", "beschreibung1", [], _id, datetime.now(), datetime.now())
-    # except s.playlist.PlaylistServiceError as e:
-    #     print(e)
-    # except s.user.UserServiceError as e:
-    #     print(e)
+    try:
+        _id = s.user.UserService.readUser(1).id
+        s.playlist.PlaylistService._createPlaylist(1, "www.youtube.com/iqouweoiqwe", "titel1", "beschreibung1", [], _id, datetime.now(), datetime.now())
+    except s.playlist.PlaylistServiceError as e:
+        print(e)
+    except s.user.UserServiceError as e:
+        print(e)
     try:
         _id = s.user.UserService.readUser(1).id
         s.playlist.PlaylistService.createPlaylist("link1", "title1", "beschreibung1", [], _id)
@@ -136,10 +137,10 @@ def create_app():
     # except s.playlist.PlaylistServiceError as e:
     #     print(e)
     # s.playlist.PlaylistService.playlistExists(1)
-    try:
-        s.tag.TagService._createTag(3, "titel1", datetime.now())
-    except s.tag.TagServiceError as e:
-        print(e)
+    # try:
+    #     s.tag.TagService._createTag(3, "titel1", datetime.now())
+    # except s.tag.TagServiceError as e:
+    #     print(e)
     # try:
     #     s.tag.TagService._createTag(1,"titel1", datetime.now())
     # except s.tag.TagServiceError as e:
@@ -223,15 +224,27 @@ def create_app():
     #     s.user.UserService._createUser(1, "passwort", "username", datetime.now(), datetime.now())
     # except s.user.UserServiceError as e:
     #     print(e)
-    s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", ["titwweel1"])
-    print(s.playlist.PlaylistService.allPlaylists)
-    s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", ["titel1"])
-    print(s.playlist.PlaylistService.allPlaylists)
-    s.playlist.PlaylistService.addTag(1, "titwweel1")
-    print(s.playlist.PlaylistService.allPlaylists)
-    s.playlist.PlaylistService.addTag(1, "bruuuudder")
-    print(s.playlist.PlaylistService.allPlaylists)
-    s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", [])
-    print(s.playlist.PlaylistService.allPlaylists)
+    # s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", ["titwweel1"])
+    # print(s.playlist.PlaylistService.allPlaylists)
+    # s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", ["titel1"])
+    # print(s.playlist.PlaylistService.allPlaylists)
+    # s.playlist.PlaylistService.addTag(1, "titwweel1")
+    # print(s.playlist.PlaylistService.allPlaylists)
+    # s.playlist.PlaylistService.addTag(1, "bruuuudder")
+    # print(s.playlist.PlaylistService.allPlaylists)
+    # s.playlist.PlaylistService.updatePlaylist(1, "title1", "beschreibung1", [])
+    # print(s.playlist.PlaylistService.allPlaylists)
+    
+    # links = ["https://music.youtube.com/playlist?list=PLnccC2viBvpEcFXJ8PsElNcQMXkOF9GP_&si=ud_ZB4sRKhiBq81I", "https:usic.youtube.com/playlist?list=PLnccC2viBvpEcFXJ8PsElNcQMXkOF9GP_&si=ud_ZB4sRKhiBq81I", "google.com", "http://google.com", "http://www.google.com"]
+    # for link in links:
+    #     print(s.playlist.PlaylistService.validateLink(link))
+    
+    # print(s.playlist.PlaylistService.validateTitle("Die Playlist von Hans, die es FETT in sich hat ✌✌✌"))
+    
+    # print(s.playlist.PlaylistService.validateLink("https://open.spotify.com/playlist/37i9dQZF1DXdLK5wjKyhVm?si=ff7c0e65767d47d9"))
+    # print(s.playlist.PlaylistService.validateLink("https://www.youtube.com/playlist?list=PLNQeq1zOd4TcbTAkaW8Uer6m8OXMNKfJa"))
+    # print(s.playlist.PlaylistService.validateLink("https://music.youtube.com/playlist?list=PLnccC2viBvpEcFXJ8PsElNcQMXkOF9GP_&si=ud_ZB4sRKhiBq81I"))
+    # print(s.playlist.PlaylistService.validateLink("https://soundcloud.com/infimusic/sets/dailykakas?si=59464911eebb48c49ab05d1df762b6d4&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing"))
+    # print(s.playlist.PlaylistService.validateLink("https://on.soundcloud.com/R8JyR"))
 
     return app

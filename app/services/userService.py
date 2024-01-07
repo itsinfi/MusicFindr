@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 from app.models import userModel as u
 from bcrypt import _bcrypt
 
@@ -22,15 +23,22 @@ class UserService:
         throws UserServiceError if:
         - user id already exists
         - username already exists
+        - username/password requirements are not fulfilled (individual error message)
         """
 
         #Prüfung, ob User-ID bereits existiert
         if UserService.userExists(id):
             raise UserServiceError(f"User with id {id} already exists.")
 
-        #Prüfung, ob Username bereits 
+        #Prüfung, ob Username bereits existiert
         if UserService.usernameExists(username):
             raise UserServiceError(f"User with username {username} already exists.")
+        
+        #Username checken
+        UserService.validateUsername(username)
+
+        #Password checken
+        UserService.validatePassword(password)
 
         #User wird erstellt
         user = u.UserModel(id, UserService.hashPassword(password), username, createdAt, updatedAt)
@@ -46,11 +54,18 @@ class UserService:
         erstellt einen Nutzer\n
         throws UserServiceError if:
         - username already exists
+        - username/password requirements are not fulfilled (individual error message)
         """
 
-        #Prüfung, ob Username bereits 
+        #Prüfung, ob Username bereits existiert
         if UserService.usernameExists(username):
             raise UserServiceError(f"User with username {username} already exists.")
+        
+        #Username checken
+        UserService.validateUsername(username)
+
+        #Password checken
+        UserService.validatePassword(password)
 
         #TODO: bitte später entfernen, das ist erstmal rein zum testen!!!!
         id = 1
@@ -79,6 +94,76 @@ class UserService:
         checkt einen String mit einem gehashten Passwort gegen
         """
         return _bcrypt.checkpw(password.encode('utf-8'), hashedPassword)
+    
+
+    @staticmethod
+    def validateUsername(username: str) -> bool:
+        """
+        checks an username for the following criteria\n
+        (throws an UserServiceException if not fulfilled):
+        - not empty
+        - at least 4 character long
+        - maximum of 20 characters long
+        - only contains small letters (a-z), numbers and underscores
+        """
+
+        #Checken, ob der Username leer ist
+        if not len(username) > 0:
+            raise UserServiceError("The username is empty. The field is required.")
+        
+        #Checken, ob der Username zu kurz ist
+        if not len(username) > 4:
+            raise UserServiceError("The username is too short. At least 4 characters are required.")
+
+        #Checken, ob der Username zu lang ist
+        if not len(username) < 20:
+            raise UserServiceError("The username is too long. It can be no more than 20 characters long.")
+        
+        #Characters checken
+        regex = r"^[a-z0-9_]+$"
+        if not (re.match(regex, username)):
+            raise UserServiceError("The username contains invalid characters. Allowed are only small letters, numbers and underscores.")
+        
+        #Anforderungen erfüllt
+        return True
+    
+
+    @staticmethod
+    def validatePassword(password: str) -> bool:
+        """
+        checks a password for the following criteria\n
+        (throws an UserServiceException if not fulfilled):
+        - not empty
+        - at least 8 character long
+        - at least 1 capital letter
+        - at least 1 small letter
+        - at least 1 numeric character
+        - at least 1 special symbol
+        """
+
+        #Checken, ob das Passwort leer ist
+        if not len(password) > 0:
+            raise UserServiceError("The password is empty. The field is required.")
+        
+        #Checken, ob das Passwort zu kurz ist
+        if not len(password) > 10:
+            raise UserServiceError("The password is too short. At least 8 characters are required.")
+        
+        #Characters checken
+        if not re.search(r'[A-Z]', password):
+            raise UserServiceError("The password must contain at least one capital letter.")
+        
+        if not re.search(r'[a-z]', password):
+            raise UserServiceError("The password must contain at least one small letter.")
+        
+        if not re.search(r'[0-9]', password):
+            raise UserServiceError("The password must contain at least one number.")
+        
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>_-]', password):
+            raise UserServiceError("The password must at least contain one special character.")
+        
+        #Anforderungen erfüllt
+        return True
     
     
     @staticmethod
@@ -134,10 +219,21 @@ class UserService:
         updated die Daten eines Users\n
         throws UserServiceError if:
         - user with specified id does not exist
+        - username/password requirements are not fulfilled (individual error message)
         """
+        
+        #Username checken
+        UserService.validateUsername(username)
+
+        #Password checken
+        UserService.validatePassword(password)
 
         #User wird ausgelesen (+ Prüfung, ob User existiert)
         user = UserService.readUser(id)
+
+        #Prüfung, ob Username bereits existiert, falls dieser geändert werden soll
+        if (user.username != username & UserService.usernameExists(username)):
+            raise UserServiceError(f"User with username {username} already exists.")
         
         #User Daten werden geupdatet
         user.password = UserService.hashPassword(password)

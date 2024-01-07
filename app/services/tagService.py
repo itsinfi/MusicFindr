@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 from app.models import tagModel as t
 
 class TagServiceError(Exception):
@@ -21,6 +22,7 @@ class TagService:
         erstellt einen Tag (bitte nur für Testzwecke nutzen)\n
         throws TagServiceException if:
         - tag with id already exists
+        - title requirements are not fulfilled (individual error message)
         """
 
         #Prüfung, ob Tag ID bereits existiert
@@ -30,6 +32,9 @@ class TagService:
         #Prüfung, ob der Title bereits existiert
         if (TagService.titleExists(title)):
             raise TagServiceError(f"Tag with title {title} already exists.")
+        
+        #Title checken
+        TagService.validateTitle(title)
 
         #Tag erstellen
         tag = t.TagModel(id, title, createdAt)
@@ -45,11 +50,15 @@ class TagService:
         erstellt einen Tag\n
         throws TagServiceException if:
         - tag with title already exists
+        - title requirements are not fulfilled (individual error message)
         """
 
         #Prüfung, ob der Title bereits existiert
         if (TagService.titleExists(title)):
             raise TagServiceError(f"Tag with title {title} already exists.")
+        
+        #Title checken
+        TagService.validateTitle(title)
 
         #TODO: bitte später entfernen, das ist erstmal rein zum testen!!!!
         id = 1
@@ -62,6 +71,33 @@ class TagService:
         #Tag zur Taglist hinzufügen
         TagService.allTags.append(tag)
         return
+    
+
+    @staticmethod
+    def validateTitle(title: str):
+        """
+        checks a title for the following criteria\n
+        (throws an TagServiceException if not fulfilled):
+        - at least 1 character long
+        - maximum of 32 characters long
+        - only contains letters (a-z), numbers and certain symbols
+        """
+
+        #Checken, ob der Titel zu kurz ist
+        if not len(title) > 0:
+            raise TagServiceError("The title is empty. The field is required.")
+
+        #Checken, ob der Titel zu lang ist
+        if not len(title) < 32:
+            raise TagServiceError("The title is longer than 32 characters.")
+        
+        #Characters checken
+        regex = r"^[A-Za-z0-9äöüß -_.,&()+#]+$"
+        if not (re.match(regex, title)):
+            raise TagServiceError("The title contains invalid characters. Allowed are only letters, numbers and some commonly used symbols.")
+        
+        #Anforderungen erfüllt
+        return True
     
 
     @staticmethod
@@ -135,10 +171,14 @@ class TagService:
         updated die Daten eines Tags\n
         throws TagServiceError if:
         - tag with specified id does not exist
+        - title requirements are not fulfilled (individual error message)
         """
 
         #Tag wird ausgelesen (+ Prüfung, ob Tag existiert)
         tag = TagService.readTag(id)
+
+        #Title checken
+        TagService.validateTitle(title)
         
         #Tag wird geupdated
         tag.title = title
