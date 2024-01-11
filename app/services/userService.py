@@ -18,6 +18,7 @@ class UserService:
     #only for testing
     @staticmethod
     def _createUser(id: int, password: str, username: str, createdAt: datetime, updatedAt: datetime):
+        print("user created")
         """
         erstellt einen Nutzer (bitte nur für Testzwecke nutzen)\n
         throws UserServiceError if:

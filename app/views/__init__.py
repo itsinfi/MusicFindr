@@ -3,6 +3,7 @@ from app.views import startPage
 from app.views import profileView
 from app.views import signUpView
 from app.views import editProfileView
+from app.services import signUpService
 from app.views import searchresults
 from flask import Blueprint
 from markupsafe import escape
@@ -24,6 +25,10 @@ def profile(uid: int):
 def signUp():
     #TODO:
     return signUpView.SignUpView.loadPage()
+
+@blueprint.route('/submit')
+def submit():
+    return signUpService.SignUpService.submit()
 
 @blueprint.route('/editProfile')
 def editProfile():
