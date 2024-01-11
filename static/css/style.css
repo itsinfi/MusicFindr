@@ -5,3 +5,24 @@ body {
 .center {
     text-align: center;
 }
+
+.arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 25px solid #fff; /* Farbe des Balkens, hier Weiß (#fff) */
+    animation: bounce 2s infinite; /* Animation mit dem Namen 'bounce' für 2 Sekunden, unendlich wiederholt */
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0); /* Der Pfeil bleibt an der gleichen Position */
+    }
+    40% {
+        transform: translateY(-20px); /* Der Pfeil bewegt sich nach oben */
+    }
+    60% {
+        transform: translateY(-10px); /* Der Pfeil bewegt sich nach unten */
+    }
+}

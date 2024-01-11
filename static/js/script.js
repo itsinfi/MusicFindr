@@ -10,3 +10,9 @@ function navigateBack() {
     console.log("navigate back!!!")
     window.history.back();
 }
+
+function search() {
+    var searchfield = document.getElementById("searchbar").value 
+    var url = window.location.href+/search/+searchfield
+    window.open(url)
+}

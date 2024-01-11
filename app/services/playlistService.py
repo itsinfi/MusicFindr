@@ -19,7 +19,7 @@ class PlaylistService:
 
     #only for testing
     @staticmethod
-    def _createPlaylist(id: int, link: str, title: str, description: str, tagStrings: list[str], createdBy: datetime, createdAt: datetime, updatedAt: datetime):
+    def _createPlaylist(id: int, link: str, title: str, description: str, tagStrings: list[str], createdBy: int, createdAt: datetime, updatedAt: datetime):
         """
         erstellt eine Playlist (bitte nur für Testzwecke nutzen)\n
         throws PlaylistServiceException if:
@@ -64,7 +64,7 @@ class PlaylistService:
     
 
     @staticmethod
-    def createPlaylist(link: str, title: str, description: str, tagStrings: list[str], createdBy: datetime):
+    def createPlaylist(link: str, title: str, description: str, tagStrings: list[str], createdBy: int):
         """
         erstellt eine Playlist\n
         throws UserException if:
@@ -435,3 +435,24 @@ class PlaylistService:
                 except PlaylistServiceError as e:
                     print(e)
         return
+    
+    @staticmethod
+    def searchPlaylist(query: str):
+        """
+        gibt eine Liste mit Playlists zurück, falls diese existiert\n
+        """
+        from app.services import tagService
+        # Suchen nach Playlist mit den Tags
+        Research = []
+        for playlist in PlaylistService.allPlaylists:
+            for tagId in playlist.tags :
+                try :
+                    tag = tagService.TagService.readTag(tagId)
+                except tagService.TagServiceError as e: 
+                    print(e)
+                    continue
+                    
+
+                if query in tag.title :
+                    Research.append(playlist)
+        return Research

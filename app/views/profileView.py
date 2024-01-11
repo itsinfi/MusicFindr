@@ -1,11 +1,11 @@
-from flask import render_template
+
 from app.views import view as v
+from flask import render_template
 
 class ProfileView(v.View):
     @staticmethod
     def loadPage(uid: int) -> render_template:
         from app.services import userService
-        from flask import render_template
         from datetime import datetime
 
         # TODO:remove later

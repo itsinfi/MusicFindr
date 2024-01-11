@@ -112,11 +112,11 @@ class UserService:
             raise UserServiceError("The username is empty. The field is required.")
         
         #Checken, ob der Username zu kurz ist
-        if not len(username) > 4:
+        if not len(username) >= 4:
             raise UserServiceError("The username is too short. At least 4 characters are required.")
 
         #Checken, ob der Username zu lang ist
-        if not len(username) < 20:
+        if not len(username) <= 20:
             raise UserServiceError("The username is too long. It can be no more than 20 characters long.")
         
         #Characters checken
@@ -146,7 +146,7 @@ class UserService:
             raise UserServiceError("The password is empty. The field is required.")
         
         #Checken, ob das Passwort zu kurz ist
-        if not len(password) > 10:
+        if not len(password) > 7:
             raise UserServiceError("The password is too short. At least 8 characters are required.")
         
         #Characters checken
