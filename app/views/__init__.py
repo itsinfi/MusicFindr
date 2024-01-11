@@ -5,6 +5,8 @@ from app.views import signUpView
 from app.views import editProfileView
 from app.services import signUpService
 from app.views import searchresults
+from app.views import playlistDetailView
+
 from flask import Blueprint
 from markupsafe import escape
 # from app.components import errorDialog as e
@@ -34,9 +36,9 @@ def submit():
 def editProfile():
     return editProfileView.EditProfileView.loadPage()
 
-# @blueprint.route('/playlist/<pid>')
-# def playlist(pid):
-#     return playlistDetail.PlaylistDetailView.loadPage(pid)
+@blueprint.route('/playlist/<pid>')
+def playlistDetail(pid: int):
+    return playlistDetailView.PlaylistDetailView.loadPage(pid)
 
 @blueprint.route('/search/<query>')
 def search(query):
