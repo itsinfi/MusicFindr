@@ -43,8 +43,8 @@ class PlaylistService:
 
         #Tags checken
         try:
-            for title in tagStrings:
-                tag.TagService.validateTitle(title)
+            for tagString in tagStrings:
+                tag.TagService.validateTitle(tagStrings)
         except tag.TagServiceError as e:
             raise PlaylistServiceError(e.message)
             
@@ -84,8 +84,8 @@ class PlaylistService:
 
         #Tags checken
         try:
-            for title in tagStrings:
-                tag.TagService.validateTitle(title)
+            for tagString in tagStrings:
+                tag.TagService.validateTitle(tagString)
         except tag.TagServiceError as e:
             raise PlaylistServiceError(e.message)
 
@@ -319,8 +319,8 @@ class PlaylistService:
 
         #Tags checken
         try:
-            for title in tagTitles:
-                tag.TagService.validateTitle(title)
+            for tagString in tagTitles:
+                tag.TagService.validateTitle(tagString)
         except tag.TagServiceError as e:
             raise PlaylistServiceError(e.message)
         
