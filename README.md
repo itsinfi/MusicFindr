@@ -6,6 +6,12 @@ What do you need to run the project?
 - install flask -> execute "pip install flask" inside the root folder
 - install bcrypt -> execute "pip install bcrypt" inside the root folder
 - install requests -> execute "pip install requests" inside the root folder
+
+- dependencies can also be installed using the requirements.txt:
+- create a venv inside the project root -> execute "python3 -m venv ./"
+- use the newly created venv -> execute "source bin/activate"
+- pip install requirements -> execute "pip install -r requirements.txt"
+
 - execute "python run.py" inside the root folder
 - can be accessed from here: http://localhost:5000/
 
