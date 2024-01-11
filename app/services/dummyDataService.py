@@ -73,6 +73,6 @@ class DummyDataService:
             print(e)
 
         #Inhalt printen
-        print(p.PlaylistService.allPlaylists)
+        # print(p.PlaylistService.allPlaylists)
 
         return
