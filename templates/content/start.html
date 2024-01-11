@@ -1,0 +1,24 @@
+
+{% extends 'Wrappers/headerAndFooter.html' %}
+
+{% block title %}Start Page{% endblock %}
+
+{% block content %}
+    <div class="d-flex flex-column justify-content-between align-items-center my-5">
+   
+        <!-- Hier ist die Suchleiste -->
+        <form action="/search/<query>" method="post">
+            <input type="text" name="query" placeholder="Suche..." id="searchbar">
+            <input type="submit" value="Suchen" onclick="search()">
+        </form>
+        
+        <div style="margin-bottom: 450px;"></div>
+
+        <div class="arrow-down"></div>
+        <ul>
+            {% for playlist in latest_playlists %}
+                <li>{{ playlist.name }} - {{ playlist.description }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

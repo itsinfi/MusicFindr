@@ -1,0 +1,33 @@
+
+{% extends 'meta.html' %}
+
+{% block body %}
+
+<header class="bg-dark position-relative d-flex justify-content-center align-items-center">
+    <div>
+        <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 60px;" class="h1">
+            :(
+        </h1>
+    </div>
+    <!-- <div>
+        <button class="btn btn-primary position-absolute end-0 top-0">
+            Sign up
+        </button>
+    </div> -->
+</header>
+<main class="pt-sm-3 flex-grow-1">
+
+    <div class="text-center img-fluid h-50">
+        <img src="{{ url_for('static', filename='assets/sad.jpg') }}" alt="A sad dog staring into your soul.">
+    </div>
+
+    {% block content %}{% endblock %}
+
+</main>
+<footer class="d-flex bg-dark-subtle text-light text-center pb-sm-1 pt-sm-3 sticky-bottom rounded-top-3">
+    <div class="container">
+        <p>&copy;2024 masters of designing but not thinking.</p>
+    </div>
+</footer>
+
+{% endblock %}
