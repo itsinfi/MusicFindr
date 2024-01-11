@@ -102,20 +102,20 @@ def create_app():
     #     print(e)
     # except s.user.UserServiceError as e:
     #     print(e)
-    try:
-        _id = s.user.UserService.readUser(1).id
-        s.playlist.PlaylistService._createPlaylist(1, "www.youtube.com/iqouweoiqwe", "titel1", "beschreibung1", [], _id, datetime.now(), datetime.now())
-    except s.playlist.PlaylistServiceError as e:
-        print(e)
-    except s.user.UserServiceError as e:
-        print(e)
-    try:
-        _id = s.user.UserService.readUser(1).id
-        s.playlist.PlaylistService.createPlaylist("link1", "title1", "beschreibung1", [], _id)
-    except s.user.UserServiceError as e:
-        print(e)
-    except s.playlist.PlaylistServiceError as e:
-        print(e)
+    # try:
+    #     _id = s.user.UserService.readUser(1).id
+    #     s.playlist.PlaylistService._createPlaylist(1, "www.youtube.com/iqouweoiqwe", "titel1", "beschreibung1", [], _id, datetime.now(), datetime.now())
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # try:
+    #     _id = s.user.UserService.readUser(1).id
+    #     s.playlist.PlaylistService.createPlaylist("link1", "title1", "beschreibung1", [], _id)
+    # except s.user.UserServiceError as e:
+    #     print(e)
+    # except s.playlist.PlaylistServiceError as e:
+    #     print(e)
     # s.playlist.PlaylistService.playlistExists(1)
     # s.playlist.PlaylistService.playlistExists(2)
     # s.playlist.PlaylistService.linkExists("link1")
