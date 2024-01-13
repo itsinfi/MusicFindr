@@ -1,9 +1,9 @@
 {% extends 'wrappers/headerAndFooter.html' %}
 
-{% block title %}Playlist {{ pid }}{% endblock %}
+{% block title %}{{ title }}|MusicFindr{% endblock %}
 
 {% block content %}
-    <h1>Playlist:{{ title }}</h1>
+    <h1>{{ title }}</h1>
     <a id = "link" href={{ link }}>Click here to listen!</a>
     <div id="tag-descriptor">Tags:
         {% for tag in tags %}
