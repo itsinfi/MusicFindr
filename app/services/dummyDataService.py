@@ -30,7 +30,7 @@ class DummyDataService:
         except p.PlaylistServiceError as e:
             print(e)
         try:
-            p.PlaylistService.createPlaylist("https://music.youtube.com/playlist?list=PLnccC2viBvpGskcbWH0I-s04Pf1Jbdqqz&si=o1V4_8Q89dUxq6Vs", "🎱🅾 80er Hits 🎱🅾", "A compilation of all the great 80s stuff from back then!", ["80s", "80s Hits", "New Wave", "Rick Roll"], 27)
+            p.PlaylistService.createPlaylist("https://music.youtube.com/playlist?list=PLnccC2viBvpGskcbWH0I-s04Pf1Jbdqqz&si=o1V4_8Q89dUxq6Vs", "🎱🅾 80s Hits 🎱🅾", "A compilation of all the great 80s stuff from back then!", ["80s", "80s Hits", "New Wave", "Rick Roll"], 27)
         except p.PlaylistServiceError as e:
             print(e)
         

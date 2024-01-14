@@ -3,5 +3,24 @@
 {% block title %}Search Results for {{ query }}{% endblock %}
 
 {% block content %}
-  <h1>{{ result }}</h1>
+  {% for playlist in result %}
+  <a href="../playlist/{{ playlist.id }}">
+    <div class="bg-dark-subtle rounded-3 shadow">
+      <div class="p-3">
+        <h1>{{ playlist.title }}</h1>
+      <a id = "link" href={{ playlist.link }}>Click here to listen!</a>
+      <div id="tag-descriptor">Tags:
+          {% for t in playlists[playlist.id] %}
+          <p class="badge bg-secondary">
+              {{ t }}
+          </p>
+          {% endfor %}
+        </div>
+        <p id="description">Description: {{ playlist.description }}</p>
+      </div>
+    </div>
+  </a>
+  <div class="pb-sm-4"></div>
+  {% endfor %}
+  <!-- <h1>{{ result }}</h1> -->
 {% endblock %}

@@ -7,12 +7,20 @@ function hideDialog() {
 }
 
 function navigateBack() {
-    console.log("navigate back!!!")
-    window.history.back();
+    var url = window.location.href+/playlist/+id
+    var win = window.open(url, '_self');  win.focus();
 }
 
 function search() {
     var searchfield = document.getElementById("searchbar").value 
-    var url = window.location.href+/search/+searchfield
+    if (event.keyCode === 13) {
+        var url = window.location.href+/search/+searchfield
+        var win = window.open(url, '_self');  win.focus();
+    }
+    
+}
+
+function openPlaylistDetail(id) {
+    var url = window.location.href + /playlist/ + id
     var win = window.open(url, '_self');  win.focus();
 }
