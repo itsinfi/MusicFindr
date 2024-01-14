@@ -7,13 +7,12 @@ function hideDialog() {
 }
 
 function navigateBack() {
-    var url = window.location.href+/playlist/+id
-    var win = window.open(url, '_self');  win.focus();
+    window.history.back();
 }
 
 function search() {
-    var searchfield = document.getElementById("searchbar").value 
-    if (event.keyCode === 13) {
+    var searchfield = document.getElementById("searchbar").value.trim()
+    if (event.keyCode === 13 && searchfield !== "") {
         var url = window.location.href+/search/+searchfield
         var win = window.open(url, '_self');  win.focus();
     }
