@@ -47,22 +47,20 @@ class DummyDataService:
 
 
         #Tijanas Playlists
-        try:
-            p.PlaylistService.createPlaylist("https://open.spotify.com/playlist/20nCafVfDd7k8crY0lcCll?si=EJB0LRD0Td6ei8uK2SLHHQ&pi=e-UJjkLbj7SiiG", "Movie Music", "", ["Movie", "Cinema", "Movie Music"], 27)
-        except p.PlaylistServiceError as e:
-            print(e)
+        # try:
+        #     p.PlaylistService.createPlaylist("https://music.youtube.com/playlist?list=PLnccC2viBvpEcFXJ8PsElNcQMXkOF9GP_&si=0b2bfmGW2r7awuet", "", "", [], 27)
+        # except p.PlaylistServiceError as e:
+        #     print(e)
 
 
         #Hendriks Playlists
-        try:
-            p.PlaylistService.createPlaylist("https://open.spotify.com/playlist/3hcfCvnUED1THe2In1ecv2?si=99dd8a9d71a04f07", "Deutsch und Punk", "", ["Punk", "Deutsch"], 27)
-        except p.PlaylistServiceError as e:
-            print(e)
-        try:
-            p.PlaylistService.createPlaylist("https://open.spotify.com/playlist/2Y4sDhoYDnCB2WbdxGjntH?si=b4a306bbd71a4040", "üpv:ärt", "", ["Party", "Indie Rock"], 27)
-        except p.PlaylistServiceError as e:
-            print(e)
+        # try:
+        #     p.PlaylistService.createPlaylist("https://music.youtube.com/playlist?list=PLnccC2viBvpEcFXJ8PsElNcQMXkOF9GP_&si=0b2bfmGW2r7awuet", "", "", [], 27)
+        # except p.PlaylistServiceError as e:
+        #     print(e)
 
+        # string: str = "A passionate playlist containing some of the greatest House tracks from the last decade in the following subgenres/similar-ish genres:\n- Future House\n- Deep House\n- Bass House\n- Tech House\n- Speed Garage\n- UK Garage\n- UK Bassline\n- Future Bounce\n- Future Bass\n- Liquid DnB\n- Melodic Dubstep"
+        # print(len(string))
 
         #Random Playlists
         try:

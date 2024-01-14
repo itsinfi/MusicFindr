@@ -13,6 +13,24 @@ class PlaylistServiceError(Exception):
         self.message = message
         super().__init__(message)
 
+class PlaylistSearchServiceError(Exception):
+    """
+    Custom Error Klasse für Methoden des PlaylistService\n
+    Bitte try except bei entsprechend gekennzeichneten Methoden verwenden!
+    """
+    def __init__(self, query): 
+        self.message = f"Keine Playlist gefunden für die Suchanfrage: {query}"
+        super().__init__(self.message)
+
+class PlaylistQueryServiceError(Exception):
+    """
+    Custom Error Klasse für Methoden des PlaylistService\n
+    Bitte try except bei entsprechend gekennzeichneten Methoden verwenden!
+    """
+    def __init__(self, message): 
+        self.message = f"Keine Suchanfrage eingegeben"
+        super().__init__(self.message)
+
 class PlaylistService:
     allPlaylists = []
 
@@ -118,10 +136,6 @@ class PlaylistService:
         - maximum of 256 characters long
         - only contains letters (a-z), numbers + certain symbols and emojis ;)
         """
-
-        #Checken, ob die Beschreibung leer ist
-        if not description:
-            return True
 
         #Checken, ob die Beschreibung zu lang ist
         if not len(description) < 256:
@@ -457,6 +471,6 @@ class PlaylistService:
                     continue
                     
 
-                if query in tag.title :
+                if query.lower() in tag.title.lower() and playlist not in Research:
                     Research.append(playlist)
         return Research

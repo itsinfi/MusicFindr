@@ -14,5 +14,5 @@ function navigateBack() {
 function search() {
     var searchfield = document.getElementById("searchbar").value 
     var url = window.location.href+/search/+searchfield
-    window.open(url)
+    var win = window.open(url, '_self');  win.focus();
 }

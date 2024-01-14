@@ -6,6 +6,8 @@ from flask import render_template
 class PlaylistDetailView(v.View):
     @staticmethod
     def loadPage(pid: int) -> render_template:
+        print(playlistService.PlaylistService.allPlaylists)
+        print(playlistService.PlaylistService.readPlaylist(1))
         try:
             playlist = playlistService.PlaylistService.readPlaylist(int(pid))
             tags = []
