@@ -137,6 +137,10 @@ class PlaylistService:
         - only contains letters (a-z), numbers + certain symbols and emojis ;)
         """
 
+        #Checken, ob die Beschreibung leer ist
+        if not description:
+            return True
+
         #Checken, ob die Beschreibung zu lang ist
         if not len(description) < 256:
             raise PlaylistServiceError("The description is longer than 256 characters.")
