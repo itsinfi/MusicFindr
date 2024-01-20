@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/hegomgi/MusicFindr/MusicFindr"
+VIRTUAL_ENV="/home/findr/MusicFindr"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
