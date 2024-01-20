@@ -15,10 +15,13 @@ def create_app():
     #App-Namen festlegen
     app = Flask("MusicFindr")
 
+    # DB initialisieren
+    s.sql.sqlService.init()
+    print(s.sql.sqlService.engine)    
+    print(s.sql.sqlService.session)        
+
     # Config
     app.config['SECRET_KEY'] = 'your_secret_key'#TODO:
-    # app.config['SQLALCHEMY_DATABASE_URI'] = '' #TODO:
-    # db = SQLAlchemy(app)
 
     app.register_blueprint(v.blueprint)
 
