@@ -241,7 +241,7 @@ class UserService:
         user.username = username
 
         #TODO: kann später entfernt werden, wird von der Datenbank übernommen
-        user.updatedAt = datetime.now()
+        user.updatedAt = int(datetime.now().timestamp())
         return
     
 
@@ -254,6 +254,7 @@ class UserService:
         """
         from app.services import playlist
         from app.services import vote
+        from app.services import sqlService as sql
 
         #User wird ausgelesen (+ Prüfung, ob User existiert)
         user = UserService.readUser(id)
@@ -263,6 +264,9 @@ class UserService:
 
         #Playlists des Users werden gelöscht
         playlist.PlaylistService.deleteAllUserPlaylists(id)
+
+        #User wird Papierkorb hinzugefügt
+        sql.sqlService.trash(user)
 
         #User wird gelöscht
         UserService.allUsers.remove(user)

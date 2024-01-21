@@ -219,7 +219,7 @@ class VoteService:
         vote.value = voteValue  
 
         #TODO: kann später entfernt werden, wird von der Datenbank übernommen
-        vote.updatedAt = datetime.now()
+        vote.updatedAt = int(datetime.now().timestamp())
         return
     
 
@@ -230,9 +230,13 @@ class VoteService:
         throws VoteServiceError if:
         - vote with specified id does not exist
         """
+        from app.services import sqlService as sql
 
         #Vote wird ausgelesen (+ Prüfung, ob Vote existiert)
         vote = VoteService.readVote(id)
+
+        #Vote wird Papierkorb hinzugefügt
+        sql.sqlService.trash(vote)
         
         #Vote wird gelöscht
         VoteService.allVotes.remove(vote)

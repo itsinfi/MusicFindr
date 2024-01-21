@@ -9,7 +9,7 @@ from app import components as c
 # from flask_sqlalchemy import SQLAlchemy
 
 def create_app():
-    #Dummy Daten laden (Anfoderung von Prototyp1)
+    # Dummy Daten laden (Anfoderung von Prototyp1)
     s.dummyData.DummyDataService.loadDummyData()
 
     #App-Namen festlegen
@@ -18,7 +18,10 @@ def create_app():
     # DB initialisieren
     s.sql.sqlService.init()
     print(s.sql.sqlService.engine)    
-    print(s.sql.sqlService.session)        
+    print(s.sql.sqlService.session)
+
+    # DB Update Scheduler erstellen
+    s.schedule.scheduleService.runShedule(10, s.sql.sqlService.updateDB)  
 
     # Config
     app.config['SECRET_KEY'] = 'your_secret_key'#TODO:

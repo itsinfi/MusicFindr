@@ -6,8 +6,8 @@ class UserModel:
         self.id = id
         self.password = password or ""
         self.username = username or ""
-        self.createdAt = createdAt or datetime.now()
-        self.updatedAt = updatedAt or datetime.now()
+        self.createdAt = int(createdAt.timestamp()) or int(datetime.now().timestamp())
+        self.updatedAt = int(updatedAt.timestamp()) or int(datetime.now().timestamp())
 
     def __repr__(self) -> str:
         return f"""User {{

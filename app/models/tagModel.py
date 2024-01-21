@@ -5,7 +5,7 @@ class TagModel:
     def __init__(self, id: int, title: str, createdAt: datetime):
         self.id = id
         self.title = title or ""
-        self.createdAt = createdAt or datetime.now()
+        self.createdAt = int(createdAt.timestamp()) or int(datetime.now().timestamp())
     
     def __repr__(self) -> str:
         return f"""Tag {{

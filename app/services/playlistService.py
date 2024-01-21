@@ -1,6 +1,5 @@
 from datetime import datetime
 import re
-
 import requests
 from app.models import playlistModel as p
 
@@ -146,7 +145,7 @@ class PlaylistService:
             raise PlaylistServiceError("The description is longer than 256 characters.")
         
         #Characters checken
-        regex = r"^[A-Za-z0-9äöüß -_.:'\",&!\*()\[\]+#\?\$\€\n\U0001F300-\U0001F5FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002702-\U000027B0\U000024C2-\U0001F251]+$"
+        regex = r"^[A-Za-z0-9ÄÖÜäöüß -_.:'\",&!\*()\[\]+#\?\$\€\n\U0001F300-\U0001F5FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002702-\U000027B0\U000024C2-\U0001F251]+$"
         if not (re.match(regex, description)):
             raise PlaylistServiceError("The description contains invalid characters. Allowed are only letters, numbers, some commonly used symbols and emojis.")
         
@@ -322,7 +321,7 @@ class PlaylistService:
             raise PlaylistServiceError(f"Could not add tags to playlist with id {id}")
 
         #TODO: kann später entfernt werden, wird von der Datenbank übernommen
-        playlist.updatedAt = datetime.now()
+        playlist.updatedAt = int(datetime.now().timestamp())
         return
     
     
@@ -413,12 +412,16 @@ class PlaylistService:
         - playlist with specified id does not exist
         """
         from app.services import vote
+        from app.services import sqlService as sql
 
         #Playlist wird ausgelesen (+ Prüfung, ob Playlist existiert)
         playlist = PlaylistService.readPlaylist(id)
         
         #Votes der Playlist werden gelöscht
         vote.VoteService.deleteAllPlaylistVotes(id)
+
+        #Tag wird Papierkorb hinzugefügt
+        sql.sqlService.trash(playlist)
 
         #Playlist wird gelöscht
         PlaylistService.allPlaylists.remove(playlist)

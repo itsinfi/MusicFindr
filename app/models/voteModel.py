@@ -11,8 +11,8 @@ class VoteModel:
         #value=-1 => downvote
         #value=0 => entfernen/neutral
         self.voteValue = voteValue or 0
-        self.createdAt = createdAt or datetime.now()
-        self.updatedAt = updatedAt or datetime.now()
+        self.createdAt = int(createdAt.timestamp()) or int(datetime.now().timestamp())
+        self.updatedAt = int(updatedAt.timestamp()) or int(datetime.now().timestamp())
 
     def __repr__(self) -> str:
         return f"""Vote {{

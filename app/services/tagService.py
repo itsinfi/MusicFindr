@@ -195,6 +195,7 @@ class TagService:
         """
         from app.services import playlist
         from app.services import vote
+        from app.services import sqlService as sql
 
         #Tag wird ausgelesen (+ Prüfung, ob Tag existiert)
         tag = TagService.readTag(id)
@@ -204,6 +205,9 @@ class TagService:
 
         #Tag von allen Playlists mit dem Tag löschen
         playlist.PlaylistService.removeTagFromAllPlaylists(id)
+
+        #Tag wird Papierkorb hinzugefügt
+        sql.sqlService.trash(tag)
 
         #Tag selbst löschen
         TagService.allTags.remove(tag)
