@@ -9,7 +9,14 @@
         <!-- Hier ist die Suchleiste -->
         <input style="width: 500px" type="text" name="query" placeholder="Search..." id="searchbar" onkeydown="search()">
         <!-- <input type="submit" value="Search" onclick="search()"> -->
-    
+        <div style="margin-bottom: 30px;"></div>
+        <div>
+        {% for tag in random_tags %}
+        <p class="badge bg-secondary">
+         <a href="../search/{{ tag.title }}" style="text-decoration: none; color: white">{{ tag.title }}</a>
+        </p>
+        {% endfor %}
+        </div>
         <div style="margin-bottom: 450px;"></div>
 
         <div class="arrow-down"></div>

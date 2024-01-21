@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import sample
 import re
 from app.models import tagModel as t
 
@@ -208,3 +209,10 @@ class TagService:
         #Tag selbst löschen
         TagService.allTags.remove(tag)
         return
+    
+    @staticmethod
+    def getThreeRandomTags():
+        """
+        Gibt eine Liste mit drei zufälligen Tags zurück.
+        """
+        return sample(TagService.allTags, min(3, len(TagService.allTags)))
