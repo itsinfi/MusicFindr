@@ -1,3 +1,4 @@
+from threading import Lock
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker, declarative_base
 import json
@@ -17,7 +18,7 @@ class sqlService:
     session = None
     base = None
 
-    trashBin = []
+    # trashBin = []
 
     @staticmethod
     def init():
@@ -61,29 +62,67 @@ class sqlService:
             connection.commit()
     
     @staticmethod
-    def delete(model, primary_key):
-        with sqlService.session() as session:
-            instance = session.query(model).get(primary_key)
-            if instance:
-                session.delete(instance)
-                session.commit()
+    def delete(tableName:str, id:int):
+        with sqlService.engine.connect() as connection:
+            query = text(f"DELETE FROM {tableName} WHERE id = {id};")
+            connection.execute(query)
+            connection.commit()
+    
+    @staticmethod
+    def deleteAllContainingID(tableName:str, idName: str, id:int):
+        with sqlService.engine.connect() as connection:
+            query = text(f"DELETE FROM {tableName} WHERE {idName} = {id};")
+            # print(query)
+            connection.execute(query)
+            connection.commit()
+
+    # @staticmethod
+    # def trash(item):
+    #     sqlService.trashBin.append(item)
 
     @staticmethod
-    def trash(item):
-        sqlService.trashBin.append(item)
+    def insertIntoTable(tableName: str, columnValues: dict):
+        with sqlService.engine.connect() as connection:
+            # Generate column names and placeholders from the dictionary
+            columns = ', '.join(columnValues.keys())
+            placeholders = ', '.join(f':{col}' for col in columnValues.keys())
+
+            # Construct the SQL query
+            query = f"INSERT INTO {tableName} ({columns}) VALUES ({placeholders})"
+
+            # Execute the prepared statement with parameter values
+            connection.execute(text(query), columnValues)
+            connection.commit()
+
+    @staticmethod
+    def updateTable(tableName: str, id:int, columnValues: dict):
+        del columnValues["id"]
+        with sqlService.engine.connect() as connection:
+            # Generate SET clause for the UPDATE statement
+            set_clause = ', '.join(f'{col} = :{col}' for col in columnValues.keys())
+
+            # Construct the SQL query with a WHERE clause based on the id parameter
+            query = f"UPDATE {tableName} SET {set_clause} WHERE id = :id"
+
+            # Add the id parameter to the columnValues dictionary
+            columnValues['id'] = id
+
+            # Execute the prepared statement with parameter values
+            connection.execute(text(query), columnValues)
+            connection.commit()
   
     @staticmethod
     def updateDB():
-        sqlService.updateUsers()
-        sqlService.updatePlaylists()
-        sqlService.updateTags()
         sqlService.updateVotes()
         sqlService.updatePlaylistTags()
-        sqlService.deleteTrashBinItems()
+        sqlService.updatePlaylists()
+        sqlService.updateTags()
+        sqlService.updateUsers()
 
     @staticmethod
     def updateUsers():
         from app.services import userService as u
+       
         appUsers = u.UserService.allUsers
         try:
             table = "User"
@@ -92,94 +131,165 @@ class sqlService:
             raise sqlServiceError(f"The table {table} could not be found or does not exist.")
         
         for appUser in appUsers:
-            if appUser.id in dbUsers:
-                dbUser = dbUsers[appUser.id]
-                if (appUser.username != dbUser["username"]):
-                    sqlService.update(table, appUser.id, "username", f"\"{appUser.username}\"")
-                if (appUser.password != dbUser["password"]):
-                    sqlService.update(table, appUser.id, "password", f"\"{appUser.password}\"")
-                if(appUser.createdAt != dbUser["createdAt"]):
-                    sqlService.update(table, appUser.id, "createdAt", f"{appUser.createdAt}")
-                if(appUser.createdAt != dbUser["updatedAt"]):
-                    sqlService.update(table, appUser.id, "updatedAt", f"{appUser.updatedAt}")
-            else:
-                sqlService.create(table, "id, username, password, createdAt, updatedAt", f"{appUser.id}, \"{appUser.username}\", \"{appUser.password}\", {appUser.createdAt}, {appUser.updatedAt}")
-        return
+            appUserDict = {
+                "id"        :   appUser.id,
+                "username"  :   appUser.username,
+                "password"  :   appUser.password,
+                "createdAt" :   appUser.createdAt,
+                "updatedAt" :   appUser.updatedAt
+            }
 
+            if not( appUser.id in dbUsers ):
+                sqlService.insertIntoTable("User", appUserDict)
+                continue
+
+            dbUser = dbUsers[appUser.id]
+            dbUserDict = {
+                "id"        :   dbUser["id"],
+                "username"  :   dbUser["username"],
+                "password"  :   dbUser["password"],
+                "createdAt" :   dbUser["createdAt"],
+                "updatedAt" :   dbUser["updatedAt"]
+            }
+
+            if not( dbUserDict == appUserDict ):
+                #print("USer Data to sync:")
+                #print("db:  "+dbUserDict)
+                #print("app: "+appUserDict)
+                sqlService.updateTable("User", dbUserDict["id"], appUserDict)
+                continue
+
+        return
+    
+    
     @staticmethod
     def updatePlaylists():
         from app.services import playlistService as p
+        
         appPlaylists = p.PlaylistService.allPlaylists
         try:
             table = "Playlist"
             dbPlaylists = sqlService.read(table)
         except Exception as e:
             raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
         for appPlaylist in appPlaylists:
-            if appPlaylist.id in dbPlaylists:
-                dbPlaylist = dbPlaylists[appPlaylist.id]
-                if (appPlaylist.link != dbPlaylist["url"]):
-                    sqlService.update(table, appPlaylist.id, "url", f"\"{appPlaylist.link}\"")
-                if (appPlaylist.title != dbPlaylist["title"]):
-                    sqlService.update(table, appPlaylist.id, "title", f"\"{appPlaylist.title}\"")
-                if (appPlaylist.description != dbPlaylist["description"]):
-                    sqlService.update(table, appPlaylist.id, "description", f"\"{appPlaylist.description}\"")
-                if (appPlaylist.createdBy != dbPlaylist["createdBy"]):
-                    sqlService.update(table, appPlaylist.id, "createdBy", f"{appPlaylist.createdBy}")
-                if (appPlaylist.createdAt != dbPlaylist["createdAt"]):
-                    sqlService.update(table, appPlaylist.id, "createdAt", f"{appPlaylist.createdAt}")
-                if (appPlaylist.updatedAt != dbPlaylist["updatedAt"]):
-                    sqlService.update(table, appPlaylist.id, "updatedAt", f"{appPlaylist.updatedAt}")
-            else:
-                sqlService.create(table, "id, title, description, url, createdBy, createdAt, updatedAt", f"{appPlaylist.id}, \"{appPlaylist.title}\", \"{appPlaylist.description}\", \"{appPlaylist.link}\", {appPlaylist.createdBy}, {appPlaylist.createdAt}, {appPlaylist.updatedAt}")
+            appPlaylistDict = {
+                "id"            :   appPlaylist.id,
+                "title"         :   appPlaylist.title,
+                "description"    :   appPlaylist.description,
+                "link"          :   appPlaylist.link,
+                "createdBy"     :   appPlaylist.createdBy,
+                "createdAt"     :   appPlaylist.createdAt,
+                "updatedAt"     :   appPlaylist.updatedAt
+            }
+
+            if not( appPlaylist.id in dbPlaylists ):
+                sqlService.insertIntoTable("Playlist", appPlaylistDict)
+                continue
+
+            dbPlaylist = dbPlaylists[appPlaylist.id]
+            dbPlaylistDict = {
+                "id"            :   dbPlaylist["id"],
+                "title"         :   dbPlaylist["title"],
+                "decription"    :   dbPlaylist["description"],
+                "link"          :   dbPlaylist["link"],
+                "createdBy"     :   dbPlaylist["createdBy"],
+                "createdAt"     :   dbPlaylist["createdAt"],
+                "updatedAt"     :   dbPlaylist["updatedAt"]
+            }
+
+            if not( dbPlaylistDict == appPlaylistDict ):
+                #print("Playlist Data to sync:")
+                #print(f"db:     {dbPlaylistDict}")
+                #print(f"app:    {appPlaylistDict}")
+                sqlService.updateTable("Playlist", dbPlaylistDict["id"], appPlaylistDict)
+                continue
+        
         return
 
     @staticmethod
     def updateTags():
         from app.services import tagService as t
+        
         appTags = t.TagService.allTags
         try:
             table = "Tag"
             dbTags = sqlService.read(table)
         except Exception as e:
             raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
         for appTag in appTags:
-            if appTag.id in dbTags:
-                dbTag = dbTags[appTag.id]
-                if (appTag.title != dbTag["title"]):
-                    sqlService.update(table, appTag.id, "title", f"\"{appTag.title}\"")
-                if (appTag.createdAt != dbTag["createdAt"]):
-                    sqlService.update(table, appTag.id, "createdAt", f"{appTag.createdAt}")
-            else:
-                sqlService.create(table, "id, title, createdAt", f"{appTag.id}, \"{appTag.title}\", {appTag.createdAt}")
+            appTagDict = {
+                "id"            :   appTag.id,
+                "title"         :   appTag.title,
+                "createdAt"     :   appTag.createdAt
+            }
+
+            if not( appTag.id in dbTags ):
+                sqlService.insertIntoTable("Tag", appTagDict)
+                continue
+
+            dbTag = dbTags[appTag.id]
+            dbTagDict = {
+                "id"            :   dbTag["id"],
+                "title"         :   dbTag["title"],
+                "createdAt"     :   dbTag["createdAt"]
+            }
+
+            if not( dbTagDict == appTagDict ):
+                #print("Playlist Data to sync:")
+                #print("db:  "+dbTagDict)
+                #print("app: "+appTagDict)
+                sqlService.updateTable("Tag", dbTagDict["id"], appTagDict)
+                continue
+        
         return
 
     @staticmethod
     def updateVotes():
         from app.services import voteService as v
+       
         appVotes = v.VoteService.allVotes
         try:
             table = "Votes"
             dbVotes = sqlService.read(table)
         except Exception as e:
             raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+              
         for appVote in appVotes:
-            if appVote.id in dbVotes:
-                dbVote = dbVotes[appVote.id]
-                if (appVote.uid != dbVote["uid"]):
-                    sqlService.update(table, dbVote.id, "uid", f"{appVote.uid}")
-                if (appVote.pid != dbVote["pid"]):
-                    sqlService.update(table, dbVote.id, "pid", f"{appVote.pid}")
-                if (appVote.tid != dbVote["tid"]):
-                    sqlService.update(table, dbVote.id, "tid", f"{appVote.tid}")
-                if (appVote.voteValue != dbVote["value"]):
-                    sqlService.update(table, dbVote.id, "value", f"{appVote.voteValue}")
-                if (appVote.createdAt != dbVote["createdAt"]):
-                    sqlService.update(table, dbVote.id, "createdAt", f"{appVote.createdAt}")
-                if (appVote.updatedAt != dbVote["updatedAt"]):
-                    sqlService.update(table, dbVote.id, "updatedAt", f"{appVote.updatedAt}")
-            else:
-                sqlService.create(table, "id, uid, tid, pid, value, createdAt, updatedAt", f"{appVote.id}, {appVote.uid}, {appVote.tid}, {appVote.pid}, {appVote.voteValue}, {appVote.createdBy}, {appVote.createdAt}, {appVote.updatedAt}")
+            appVoteDict = {
+                "id"            :   appVote.id,
+                "uid"           :   appVote.uid,
+                "tid"           :   appVote.tid,
+                "pid"           :   appVote.pid,
+                "value"         :   appVote.value,
+                "createdAt"     :   appVote.createdAt,
+                "updatedAt"     :   appVote.updateddAt
+            }
+
+            if not( appVote.id in appVotes ):
+                sqlService.insertIntoTable("Tag", appTagDict)
+                continue
+
+            dbVote = dbVotes[appVote.id]
+            dbVoteDict = {
+                "id"            :   dbVote["id"],
+                "uid"           :   dbVote["uid"],
+                "tid"           :   dbVote["tid"],
+                "pid"           :   dbVote["pid"],
+                "value"         :   dbVote["value"],
+                "createdAt"     :   dbVote["createdAt"],
+                "updatedAt"     :   dbVote["updateddAt"]
+            }
+
+            if not( dbVoteDict == appVoteDict ):
+                #print("Vote Data to sync:")
+                #print("db:  "+dbVoteDict)
+                #print("app: "+appVoteDict)
+                sqlService.updateTable("Votes", dbVoteDict["id"], appVoteDict)
+                continue
+        
         return
 
     @staticmethod
@@ -188,37 +298,37 @@ class sqlService:
         playlists = p.PlaylistService.allPlaylists
         appPlaylistTags = []
 
-        print(playlists)
+        # print(playlists)
 
         for playlist in playlists:
             for tagID in playlist.tags:
                 appPlaylistTags.append({"pid": playlist.id, "tid": tagID})
+        
+        # print(playlists)
 
         try:
             table = "TagPlaylist_Relationship"
             dbPlaylistTags = sqlService.read(table)
         except Exception as e:
             raise sqlServiceError(f"The table {table} could not be found or does not exist.")
-
+        # print(appPlaylistTags)
         for appPlaylistTag in appPlaylistTags:
             _pid, _tid = appPlaylistTag["pid"], appPlaylistTag["tid"]
             existing_entry = next(
                 (entry for entry in dbPlaylistTags.values() if entry["pid"] == _pid and entry["tid"] == _tid),
                 None
             )
-            print(f"{_tid}, {_pid}, {existing_entry}")
+            # print(f"{_tid}, {_pid}, {existing_entry}")
 
             if existing_entry is None:
                 sqlService.create(table, "pid, tid", f"{_pid}, {_tid}")
+            
 
         return
-
-
     
-    @staticmethod
-    def deleteTrashBinItems():
-        #TODO:
-        return
+    # @staticmethod
+    # def deleteTrashBinItems():
+    #     return
     
     @staticmethod
     def readDB():
@@ -230,29 +340,105 @@ class sqlService:
     
     @staticmethod
     def readUsers():
-        #TODO:
+        from app.services import userService as u
+        try:
+            table = "User"
+            dbUsers = sqlService.read(table)
+        except Exception as e:
+            raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
+        for id, dbUser in dbUsers.items():
+            # print(dbUser)
+            try:
+                u.UserService._createUser(int(dbUser["id"]), dbUser["password"], dbUser["username"], int(dbUser["createdAt"]), int(dbUser["updatedAt"]))
+            except Exception as e:
+                print(e)
+                continue
+        # print(u.UserService.allUsers)
         return
     
     @staticmethod
     def readPlaylists():
-        #TODO:
+        from app.services import playlistService as p
+        try:
+            table = "Playlist"
+            dbPlaylists = sqlService.read(table)
+        except Exception as e:
+            raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
+        for id, dbPlaylist in dbPlaylists.items():
+            # print(dbPlaylist)
+            try:
+                p.PlaylistService._createPlaylist(int(dbPlaylist["id"]), dbPlaylist["link"], dbPlaylist["title"], dbPlaylist["description"], [], int(dbPlaylist["createdBy"]), int(dbPlaylist["createdAt"]), int(dbPlaylist["updatedAt"]))
+            except Exception as e:
+                print(e)
+                continue
+        # print(p.PlaylistService.allPlaylists)
         return
     
     @staticmethod
     def readTags():
-        #TODO:
+        from app.services import tagService as t
+        try:
+            table = "Tag"
+            dbTags = sqlService.read(table)
+        except Exception as e:
+            raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
+        for id, dbTag in dbTags.items():
+            # print(dbTag)
+            try:
+                t.TagService._createTag(int(dbTag["id"]), dbTag["title"], int(dbTag["createdAt"]))
+            except Exception as e:
+                print(e)
+                continue
         return
     
     @staticmethod
     def readVotes():
-        #TODO:
+        from app.services import voteService as v
+        try:
+            table = "Votes"
+            dbVotes = sqlService.read(table)
+        except Exception as e:
+            raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
+        for id, dbVote in dbVotes.items():
+            # print(dbTag)
+            try:
+                v.VoteService._createVote(int(dbVote["id"]), int(dbVote["uid"]), int(dbVote["pid"]), int(dbVote["tid"]), int(dbVote["value"]), int(dbVote["createdAt"]), int(dbVote["updatedAt"]))
+            except Exception as e:
+                print(e)
+                continue
         return
     
     @staticmethod
     def readPlaylistTags():
-        #TODO:
+        from app.services import playlistService as p
+        try:
+            table = "TagPlaylist_Relationship"
+            dbPlaylistTags = sqlService.read(table)
+        except Exception as e:
+            raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
+        try:
+            table = "Playlist"
+            dbPlaylists = sqlService.read(table)
+        except Exception as e:
+            raise sqlServiceError(f"The table {table} could not be found or does not exist.")
+        
+        for dbPlaylist in dbPlaylists.values():
+            playlistTags = []
+            for dbPlaylistTag in dbPlaylistTags.values():
+                if (dbPlaylist["id"] == dbPlaylistTag["pid"]):
+                    playlistTags.append(dbPlaylistTag["tid"])
+            try:
+                playlist = p.PlaylistService.readPlaylist(dbPlaylist["id"])
+                playlist.tags = playlistTags
+            except Exception as e:
+                print(e)
+                continue
         return
     
 
 sqlService.init()
-sqlService.updateDB()

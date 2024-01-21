@@ -16,7 +16,7 @@ class VoteService:
 
     #only for testing
     @staticmethod
-    def _createVote(id, uid: int, pid: int, tid: int, voteValue: int, createdAt: datetime, updatedAt: datetime):
+    def _createVote(id, uid: int, pid: int, tid: int, voteValue: int, createdAt: int, updatedAt: int):
         """
         erstellt einen Vote (bitte nur für Testzwecke nutzen)\n
         throws VoteServiceException if:
@@ -128,7 +128,7 @@ class VoteService:
             id += 1
 
         #Vote erstellen
-        vote = v.VoteModel(id, uid, pid, tid, voteValue, datetime.now(), datetime.now())
+        vote = v.VoteModel(id, uid, pid, tid, voteValue, int(datetime.now().timestamp()), int(datetime.now().timestamp()))
         
         #Vote zur Votelist hinzufügen
         VoteService.allVotes.append(vote)
@@ -235,11 +235,11 @@ class VoteService:
         #Vote wird ausgelesen (+ Prüfung, ob Vote existiert)
         vote = VoteService.readVote(id)
 
-        #Vote wird Papierkorb hinzugefügt
-        sql.sqlService.trash(vote)
-        
         #Vote wird gelöscht
         VoteService.allVotes.remove(vote)
+        
+        #Vote wird aus der DB gelöscht
+        sql.sqlService.delete("Votes", id)
         return
     
 
@@ -248,15 +248,19 @@ class VoteService:
         """
         löscht alle Votes einer Playlist\n
         """
-
+        ids = []
+        
         #Alle Votes der Playlist werden gesucht und gelöscht
         for vote in VoteService.allVotes:
             if (vote.pid == pid):
-                try:
-                    VoteService.deleteVote(vote.id)
-                except VoteServiceError as e:
-                    print(e)
-                    continue
+                ids.append(vote.pid)
+                
+        for id in ids:
+            try:
+                VoteService.deleteVote(id)
+            except VoteServiceError as e:
+                print(e)
+                continue
         return
 
 
@@ -265,15 +269,17 @@ class VoteService:
         """
         löscht alle Votes eines Tags\n
         """
-
+        ids = []
         #Alle Votes des Tags werden gesucht und gelöscht
         for vote in VoteService.allVotes:
             if (vote.tid == tid):
-                try:
-                    VoteService.deleteVote(vote.id)
-                except VoteServiceError as e:
-                    print(e)
-                    continue
+                ids.append(vote.tid)
+        for id in ids:
+            try:
+                VoteService.deleteVote(id)
+            except VoteServiceError as e:
+                print(e)
+                continue
         return
 
 
@@ -283,12 +289,15 @@ class VoteService:
         löscht alle Votes eines Users\n
         """
 
+        ids = []
         #Alle Votes des Users werden gesucht und gelöscht
         for vote in VoteService.allVotes:
             if (vote.uid == uid):
-                try:
-                    VoteService.deleteVote(vote.id)
-                except VoteServiceError as e:
-                    print(e)
-                    continue
+                ids.append(vote.uid)
+        for id in ids:
+            try:
+                VoteService.deleteVote(id)
+            except VoteServiceError as e:
+                print(e)
+                continue
         return

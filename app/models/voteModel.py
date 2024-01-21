@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 class VoteModel:
-    def __init__(self, id: int, uid: int, pid: int, tid: int, voteValue: int, createdAt: datetime, updatedAt: datetime):
+    def __init__(self, id: int, uid: int, pid: int, tid: int, voteValue: int, createdAt: int, updatedAt: int):
         self.id = id
         self.uid = uid
         self.pid = pid
@@ -11,8 +11,8 @@ class VoteModel:
         #value=-1 => downvote
         #value=0 => entfernen/neutral
         self.voteValue = voteValue or 0
-        self.createdAt = int(createdAt.timestamp()) or int(datetime.now().timestamp())
-        self.updatedAt = int(updatedAt.timestamp()) or int(datetime.now().timestamp())
+        self.createdAt = createdAt or int(datetime.now().timestamp())
+        self.updatedAt = updatedAt or int(datetime.now().timestamp())
 
     def __repr__(self) -> str:
         return f"""Vote {{

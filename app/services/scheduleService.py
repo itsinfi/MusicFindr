@@ -5,6 +5,7 @@ class scheduleService:
     def scheduleThreadLoop(interval, targetFunction):
         while True:
             targetFunction()
+            # print(f"[i] Schedule: Executed {targetFunction.__name__}")
             time.sleep(interval)
 
     def runShedule(interval:int, targetFunction):

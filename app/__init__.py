@@ -10,18 +10,16 @@ from app import components as c
 
 def create_app():
     # Dummy Daten laden (Anfoderung von Prototyp1)
-    s.dummyData.DummyDataService.loadDummyData()
+    # s.dummyData.DummyDataService.loadDummyData()
 
     #App-Namen festlegen
     app = Flask("MusicFindr")
 
     # DB initialisieren
     s.sql.sqlService.init()
-    print(s.sql.sqlService.engine)    
-    print(s.sql.sqlService.session)
 
-    # DB Update Scheduler erstellen
-    s.schedule.scheduleService.runShedule(10, s.sql.sqlService.updateDB)  
+    # LIFE SAVER
+    app.before_request(s.sql.sqlService.updateDB)
 
     # Config
     app.config['SECRET_KEY'] = 'your_secret_key'#TODO:

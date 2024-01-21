@@ -36,7 +36,7 @@ class PlaylistService:
 
     #only for testing
     @staticmethod
-    def _createPlaylist(id: int, link: str, title: str, description: str, tagStrings: list[str], createdBy: int, createdAt: datetime, updatedAt: datetime):
+    def _createPlaylist(id: int, link: str, title: str, description: str, tagStrings: list[str], createdBy: int, createdAt: int, updatedAt: int):
         """
         erstellt eine Playlist (bitte nur für Testzwecke nutzen)\n
         throws PlaylistServiceException if:
@@ -48,23 +48,6 @@ class PlaylistService:
         #Prüfung, ob Playlist-ID bereits existiert
         if (PlaylistService.playlistExists(id)):
             raise PlaylistServiceError(f"Playlist with id {id} already exists.")
-        
-        #Link checken
-        PlaylistService.validateLink(link)
-
-        #Title checken
-        PlaylistService.validateTitle(title)
-
-        #Description checken
-        PlaylistService.validateDescription(description)
-
-        #Tags checken
-        try:
-            for tagString in tagStrings:
-                tag.TagService.validateTitle(tagStrings)
-        except tag.TagServiceError as e:
-            raise PlaylistServiceError(e.message)
-            
 
         #Playlist erstellen
         playlist = p.PlaylistModel(id, link, title, description, createdBy, createdAt, updatedAt)
@@ -112,7 +95,7 @@ class PlaylistService:
             id += 1
 
         #Playlist erstellen
-        playlist = p.PlaylistModel(id, link, title, description, createdBy, datetime.now(), datetime.now())
+        playlist = p.PlaylistModel(id, link, title, description, createdBy, int(datetime.now().timestamp()), int(datetime.now().timestamp()))
 
         #Playlist zur Playlist list hinzufügen
         PlaylistService.allPlaylists.append(playlist)
@@ -420,11 +403,16 @@ class PlaylistService:
         #Votes der Playlist werden gelöscht
         vote.VoteService.deleteAllPlaylistVotes(id)
 
-        #Tag wird Papierkorb hinzugefügt
-        sql.sqlService.trash(playlist)
-
         #Playlist wird gelöscht
         PlaylistService.allPlaylists.remove(playlist)
+
+        print(PlaylistService.allPlaylists)
+
+        #Verbindungen zu Tags in der DB werden gelöscht
+        sql.sqlService.deleteAllContainingID("TagPlaylist_Relationship", "pid", id)
+
+        #Playlist wird aus der DB gelöscht
+        sql.sqlService.delete("Playlist", id)
         return
 
 
@@ -452,13 +440,17 @@ class PlaylistService:
         löscht alle Playlist des Nutzers mit der uid\n
         """
 
+        ids = []
         #Playlists des Users suchen und löschen
         for playlist in PlaylistService.allPlaylists:
             if (playlist.createdBy == uid):
-                try:
-                    PlaylistService.deletePlaylist(playlist.id)
-                except PlaylistServiceError as e:
-                    print(e)
+                ids.append(playlist.id)
+                
+        for id in ids:
+            try:
+                PlaylistService.deletePlaylist(id)
+            except PlaylistServiceError as e:
+                print(e)
         return
     
     @staticmethod

@@ -17,8 +17,8 @@ class UserService:
 
     #only for testing
     @staticmethod
-    def _createUser(id: int, password: str, username: str, createdAt: datetime, updatedAt: datetime):
-        print("user created")
+    def _createUser(id: int, password: str, username: str, createdAt: int, updatedAt: int):
+        # print("user created")
         """
         erstellt einen Nutzer (bitte nur für Testzwecke nutzen)\n
         throws UserServiceError if:
@@ -34,15 +34,9 @@ class UserService:
         #Prüfung, ob Username bereits existiert
         if UserService.usernameExists(username):
             raise UserServiceError(f"User with username {username} already exists.")
-        
-        #Username checken
-        UserService.validateUsername(username)
-
-        #Password checken
-        UserService.validatePassword(password)
 
         #User wird erstellt
-        user = u.UserModel(id, UserService.hashPassword(password), username, createdAt, updatedAt)
+        user = u.UserModel(id, password, username, createdAt, updatedAt)
 
         #Hinzufügen zur User List
         UserService.allUsers.append(user)
@@ -74,7 +68,7 @@ class UserService:
             id += 1
 
         #User wird erstellt
-        user = u.UserModel(id, UserService.hashPassword(password), username, datetime.now(), datetime.now())
+        user = u.UserModel(id, UserService.hashPassword(password), username, int(datetime.now().timestamp()), int(datetime.now().timestamp()))
 
         #User wird zur User List hinzugefügt
         UserService.allUsers.append(user)
@@ -86,7 +80,7 @@ class UserService:
         """
         hasht ein Passwort
         """
-        return _bcrypt.hashpw(password.encode('utf-8'), _bcrypt.gensalt())
+        return _bcrypt.hashpw(password.encode('utf-8'), _bcrypt.gensalt()).decode()
     
 
     @staticmethod
@@ -105,7 +99,7 @@ class UserService:
         - not empty
         - at least 4 character long
         - maximum of 20 characters long
-        - only contains small letters (a-z), numbers and underscores
+        - only contains letters (a-z, A-Z), numbers and underscores
         """
 
         #Checken, ob der Username leer ist
@@ -121,7 +115,7 @@ class UserService:
             raise UserServiceError("The username is too long. It can be no more than 20 characters long.")
         
         #Characters checken
-        regex = r"^[a-z0-9_]+$"
+        regex = r"^[a-zA-Z0-9_]+$"
         if not (re.match(regex, username)):
             raise UserServiceError("The username contains invalid characters. Allowed are only small letters, numbers and underscores.")
         
@@ -233,12 +227,15 @@ class UserService:
         user = UserService.readUser(id)
 
         #Prüfung, ob Username bereits existiert, falls dieser geändert werden soll
-        if (user.username != username & UserService.usernameExists(username)):
+        if (user.username != username and UserService.usernameExists(username)):
             raise UserServiceError(f"User with username {username} already exists.")
         
         #User Daten werden geupdatet
-        user.password = UserService.hashPassword(password)
-        user.username = username
+        # if not (UserService.checkPassword(password)):
+        #     user.password = UserService.hashPassword(password)
+
+        if (user.username != username):
+            user.username = username
 
         #TODO: kann später entfernt werden, wird von der Datenbank übernommen
         user.updatedAt = int(datetime.now().timestamp())
@@ -265,9 +262,9 @@ class UserService:
         #Playlists des Users werden gelöscht
         playlist.PlaylistService.deleteAllUserPlaylists(id)
 
-        #User wird Papierkorb hinzugefügt
-        sql.sqlService.trash(user)
-
         #User wird gelöscht
         UserService.allUsers.remove(user)
+
+        #User wird aus der DB gelöscht
+        sql.sqlService.delete("User", id)
         return

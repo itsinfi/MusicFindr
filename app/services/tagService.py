@@ -17,7 +17,7 @@ class TagService:
     
     #only for testing
     @staticmethod
-    def _createTag(id: int, title: str, createdAt: datetime):
+    def _createTag(id: int, title: str, createdAt: int):
         """
         erstellt einen Tag (bitte nur für Testzwecke nutzen)\n
         throws TagServiceException if:
@@ -32,9 +32,6 @@ class TagService:
         #Prüfung, ob der Title bereits existiert
         if (TagService.titleExists(title)):
             raise TagServiceError(f"Tag with title {title} already exists.")
-        
-        #Title checken
-        TagService.validateTitle(title)
 
         #Tag erstellen
         tag = t.TagModel(id, title, createdAt)
@@ -66,7 +63,7 @@ class TagService:
             id += 1
 
         #Tag erstellen
-        tag = t.TagModel(id, title, datetime.now())
+        tag = t.TagModel(id, title, int(datetime.now().timestamp()))
 
         #Tag zur Taglist hinzufügen
         TagService.allTags.append(tag)
@@ -206,9 +203,12 @@ class TagService:
         #Tag von allen Playlists mit dem Tag löschen
         playlist.PlaylistService.removeTagFromAllPlaylists(id)
 
-        #Tag wird Papierkorb hinzugefügt
-        sql.sqlService.trash(tag)
-
         #Tag selbst löschen
         TagService.allTags.remove(tag)
+
+        #Verbindungen zu Playlists in der DB werden gelöscht
+        sql.sqlService.deleteAllContainingID("TagPlaylist_Relationship", "tid", id)
+
+        #Tag wird aus der DB gelöscht
+        sql.sqlService.delete("Tag", id)
         return
