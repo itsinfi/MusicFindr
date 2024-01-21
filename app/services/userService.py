@@ -78,9 +78,11 @@ class UserService:
     @staticmethod
     def login(password: str, username: str):
         errorMessage = "Wrong username or password."
+        print(password)
+        print(type(password))
         if (UserService.usernameExists(username)):
             user = UserService.getUserViaUsername(username)
-            if UserService.checkPassword(password, user.password):
+            if UserService.checkPassword(password, user.password.encode()):
                 # log in
                 UserService.loggedUser = user
             else:

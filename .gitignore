@@ -5,3 +5,15 @@ lib64
 bin/
 pyvenv.cfg
 dbConnection.json
+include/site/python3.12/greenlet/greenlet.h
+Scripts/activate
+Scripts/activate.bat
+Scripts/Activate.ps1
+Scripts/deactivate.bat
+Scripts/flask.exe
+Scripts/normalizer.exe
+Scripts/pip.exe
+Scripts/pip3.12.exe
+Scripts/pip3.exe
+Scripts/python.exe
+Scripts/pythonw.exe
