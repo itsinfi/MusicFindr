@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import shuffle
 import re
 
 import requests
@@ -478,3 +479,26 @@ class PlaylistService:
                 if query.lower() in tag.title.lower() and playlist not in Research:
                     Research.append(playlist)
         return Research
+    
+    @staticmethod
+    def getShuffledPlaylist():
+        """
+        Gibt eine zufällig sortierte Liste aller Playlists zurück.
+        """
+        shuffled_playlist = PlaylistService.allPlaylists.copy()
+        shuffle(shuffled_playlist)
+        return shuffled_playlist
+    
+    # @staticmethod
+    # def getSortedPlaylist():
+    #     """
+    #     Gibt eine nach dem Erstellungsdatum sortierte Liste aller Playlists zurück.
+    #     """
+    #     sort = PlaylistService.allPlaylists.copy()
+        
+    #     # Sortiere die Playlists nach dem Erstellungsdatum
+    #     sorted_playlist = sorted(sort, key= sort.createdAt)
+        
+    #     return sorted_playlist
+    
+    

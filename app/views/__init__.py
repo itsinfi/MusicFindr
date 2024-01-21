@@ -6,8 +6,9 @@ from app.views import editProfileView
 from app.services import signUpService
 from app.views import searchresults
 from app.views import playlistDetailView
+from app.services import playlistService
 
-from flask import Blueprint
+from flask import Blueprint, app, render_template, request
 from markupsafe import escape
 # from app.components import errorDialog as e
 
@@ -17,7 +18,8 @@ blueprint = Blueprint('views', __name__)
 
 @blueprint.route('/')
 def start():
-    return startPage.StartPage.getStartPage()
+    return startPage.StartPage.getDiscoverarea()
+
 
 @blueprint.route('/profile/<uid>')
 def profile(uid: int):
@@ -43,4 +45,5 @@ def playlistDetail(pid: int):
 @blueprint.route('/search/<query>')
 def search(query):
     return searchresults.SearchResults.loadPage(query)
+
 

@@ -23,3 +23,9 @@ function openPlaylistDetail(id) {
     var url = window.location.href + /playlist/ + id
     var win = window.open(url, '_self');  win.focus();
 }
+
+// function playlist_order() {
+//     var order = document.getelementbyid("playlist_order").value.trim()
+//     var currenturl = window.location.href + order;
+//     var win = window.open(currenturl, '_self');  win.focus();
+// }
