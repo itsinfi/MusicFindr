@@ -25,7 +25,7 @@ def start():
 def profile(uid: int):
     return profileView.ProfileView.loadPage(uid)
 
-@blueprint.route('/signUp')
+@blueprint.route('/signUp', methods = ['POST', 'GET'])
 def signUp():
     #TODO:
     return signUpView.SignUpView.loadPage()
