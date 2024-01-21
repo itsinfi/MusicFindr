@@ -4,3 +4,4 @@ lib/
 lib64
 bin/
 pyvenv.cfg
+dbConnection.json

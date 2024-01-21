@@ -1,7 +1,6 @@
 from datetime import datetime
 from random import shuffle
 import re
-
 import requests
 from app.models import playlistModel as p
 
@@ -38,7 +37,7 @@ class PlaylistService:
 
     #only for testing
     @staticmethod
-    def _createPlaylist(id: int, link: str, title: str, description: str, tagStrings: list[str], createdBy: int, createdAt: datetime, updatedAt: datetime):
+    def _createPlaylist(id: int, link: str, title: str, description: str, tagStrings: list[str], createdBy: int, createdAt: int, updatedAt: int):
         """
         erstellt eine Playlist (bitte nur für Testzwecke nutzen)\n
         throws PlaylistServiceException if:
@@ -50,23 +49,6 @@ class PlaylistService:
         #Prüfung, ob Playlist-ID bereits existiert
         if (PlaylistService.playlistExists(id)):
             raise PlaylistServiceError(f"Playlist with id {id} already exists.")
-        
-        #Link checken
-        PlaylistService.validateLink(link)
-
-        #Title checken
-        PlaylistService.validateTitle(title)
-
-        #Description checken
-        PlaylistService.validateDescription(description)
-
-        #Tags checken
-        try:
-            for tagString in tagStrings:
-                tag.TagService.validateTitle(tagStrings)
-        except tag.TagServiceError as e:
-            raise PlaylistServiceError(e.message)
-            
 
         #Playlist erstellen
         playlist = p.PlaylistModel(id, link, title, description, createdBy, createdAt, updatedAt)
@@ -114,7 +96,7 @@ class PlaylistService:
             id += 1
 
         #Playlist erstellen
-        playlist = p.PlaylistModel(id, link, title, description, createdBy, datetime.now(), datetime.now())
+        playlist = p.PlaylistModel(id, link, title, description, createdBy, int(datetime.now().timestamp()), int(datetime.now().timestamp()))
 
         #Playlist zur Playlist list hinzufügen
         PlaylistService.allPlaylists.append(playlist)
@@ -147,7 +129,7 @@ class PlaylistService:
             raise PlaylistServiceError("The description is longer than 256 characters.")
         
         #Characters checken
-        regex = r"^[A-Za-z0-9äöüß -_.:'\",&!\*()\[\]+#\?\$\€\n\U0001F300-\U0001F5FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002702-\U000027B0\U000024C2-\U0001F251]+$"
+        regex = r"^[A-Za-z0-9ÄÖÜäöüß -_.:'\",&!\*()\[\]+#\?\$\€\n\U0001F300-\U0001F5FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U0001F700-\U0001F77F\U0001F780-\U0001F7FF\U0001F800-\U0001F8FF\U0001F900-\U0001F9FF\U0001FA00-\U0001FA6F\U0001FA70-\U0001FAFF\U00002702-\U000027B0\U000024C2-\U0001F251]+$"
         if not (re.match(regex, description)):
             raise PlaylistServiceError("The description contains invalid characters. Allowed are only letters, numbers, some commonly used symbols and emojis.")
         
@@ -323,7 +305,7 @@ class PlaylistService:
             raise PlaylistServiceError(f"Could not add tags to playlist with id {id}")
 
         #TODO: kann später entfernt werden, wird von der Datenbank übernommen
-        playlist.updatedAt = datetime.now()
+        playlist.updatedAt = int(datetime.now().timestamp())
         return
     
     
@@ -414,6 +396,7 @@ class PlaylistService:
         - playlist with specified id does not exist
         """
         from app.services import vote
+        from app.services import sqlService as sql
 
         #Playlist wird ausgelesen (+ Prüfung, ob Playlist existiert)
         playlist = PlaylistService.readPlaylist(id)
@@ -423,6 +406,14 @@ class PlaylistService:
 
         #Playlist wird gelöscht
         PlaylistService.allPlaylists.remove(playlist)
+
+        print(PlaylistService.allPlaylists)
+
+        #Verbindungen zu Tags in der DB werden gelöscht
+        sql.sqlService.deleteAllContainingID("TagPlaylist_Relationship", "pid", id)
+
+        #Playlist wird aus der DB gelöscht
+        sql.sqlService.delete("Playlist", id)
         return
 
 
@@ -450,13 +441,17 @@ class PlaylistService:
         löscht alle Playlist des Nutzers mit der uid\n
         """
 
+        ids = []
         #Playlists des Users suchen und löschen
         for playlist in PlaylistService.allPlaylists:
             if (playlist.createdBy == uid):
-                try:
-                    PlaylistService.deletePlaylist(playlist.id)
-                except PlaylistServiceError as e:
-                    print(e)
+                ids.append(playlist.id)
+                
+        for id in ids:
+            try:
+                PlaylistService.deletePlaylist(id)
+            except PlaylistServiceError as e:
+                print(e)
         return
     
     @staticmethod

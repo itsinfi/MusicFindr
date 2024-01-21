@@ -47,5 +47,3 @@ def playlistDetail(pid: int):
 @blueprint.route('/search/<query>')
 def search(query):
     return searchresults.SearchResults.loadPage(query)
-
-

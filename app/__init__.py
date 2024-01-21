@@ -9,16 +9,20 @@ from app import components as c
 # from flask_sqlalchemy import SQLAlchemy
 
 def create_app():
-    #Dummy Daten laden (Anfoderung von Prototyp1)
-    s.dummyData.DummyDataService.loadDummyData()
+    # Dummy Daten laden (Anfoderung von Prototyp1)
+    # s.dummyData.DummyDataService.loadDummyData()
 
     #App-Namen festlegen
     app = Flask("MusicFindr")
 
+    # DB initialisieren
+    s.sql.sqlService.init()
+
+    # LIFE SAVER
+    app.before_request(s.sql.sqlService.updateDB)
+
     # Config
     app.config['SECRET_KEY'] = 'your_secret_key'#TODO:
-    # app.config['SQLALCHEMY_DATABASE_URI'] = '' #TODO:
-    # db = SQLAlchemy(app)
 
     app.register_blueprint(v.blueprint)
 
