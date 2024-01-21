@@ -2,8 +2,8 @@ from app.views import startPage
 # from app.views import playlistDetail
 from app.views import profileView
 from app.views import signUpView
+from app.views import loginView
 from app.views import editProfileView
-from app.services import signUpService
 from app.views import searchresults
 from app.views import playlistDetailView
 from app.services import playlistService
@@ -30,9 +30,11 @@ def signUp():
     #TODO:
     return signUpView.SignUpView.loadPage()
 
-@blueprint.route('/submit')
-def submit():
-    return signUpService.SignUpService.submit()
+@blueprint.route('/login', methods = ['POST', 'GET'])
+def login():
+    #TODO:
+    return loginView.LoginView.loadPage()
+
 
 @blueprint.route('/editProfile')
 def editProfile():

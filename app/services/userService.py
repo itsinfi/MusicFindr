@@ -14,6 +14,7 @@ class UserServiceError(Exception):
 
 class UserService:
     allUsers = []
+    loggedUser = None
 
     #only for testing
     @staticmethod
@@ -79,6 +80,20 @@ class UserService:
         #User wird zur User List hinzugefügt
         UserService.allUsers.append(user)
         return
+    
+    @staticmethod
+    def login(password: str, username: str):
+        errorMessage = "Wrong username or password."
+        if (UserService.usernameExists(username)):
+            user = UserService.getUserViaUsername(username)
+            if UserService.checkPassword(password, user.password):
+                # log in
+                UserService.loggedUser = user
+            else:
+                raise UserServiceError(errorMessage)
+        else:
+            raise UserServiceError(errorMessage)
+
     
 
     @staticmethod
@@ -182,6 +197,12 @@ class UserService:
         
         #UserServiceError, falls nicht gefunden
         raise UserServiceError(f"User with id {id} could not be found or does not exist.")
+    
+    @staticmethod
+    def getUserViaUsername(username: str) -> u.UserModel:
+        for user in UserService.allUsers:
+            if user.username == username:
+                return user
         
 
     @staticmethod

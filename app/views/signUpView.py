@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, redirect
 from app.views import view as v
 from app.services import userService
 
@@ -10,6 +10,7 @@ class SignUpView(v.View):
 
         if request.method == 'POST':
             userService.UserService.createUser(request.form['password'], request.form['userName'])
+            return redirect("login")
 
 
         #TODO: add return statement
