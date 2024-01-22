@@ -3,6 +3,7 @@ from app.views import startPage
 from app.views import profileView
 from app.views import signUpView
 from app.views import loginView
+from app.views import logoutView
 from app.views import editProfileView
 from app.views import searchresults
 from app.views import playlistDetailView
@@ -34,6 +35,10 @@ def signUp():
 def login():
     #TODO:
     return loginView.LoginView.loadPage()
+
+@blueprint.route('/logout')
+def logout():
+    return logoutView.logout()
 
 
 @blueprint.route('/editProfile')

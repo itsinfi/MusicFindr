@@ -1,8 +1,8 @@
 
-from app.views import view as v
 from flask import render_template
+from app.services import userService
 
-class ProfileView(v.View):
+class ProfileView():
     @staticmethod
     def loadPage(uid: int) -> render_template:
         from app.services import userService
@@ -16,7 +16,7 @@ class ProfileView(v.View):
 
         try:
             result = userService.UserService.readUser(int(uid))
-            return render_template('content/profile.html', username = result.username)
+            return render_template('content/profile.html', username = result.username, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
         except userService.UserServiceError as e:
             raise e
 

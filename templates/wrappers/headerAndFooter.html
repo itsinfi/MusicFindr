@@ -10,11 +10,26 @@
         </h1>
     </div>
     <div>
-        <a href="/signUp">
-            <button class="btn btn-primary position-absolute end-0 top-0">
-                Sign up
-            </button>
-        </a>
+
+        {% if not hidebutton %}
+        
+            {% if loggedin %}
+            <a href="/logout">
+                <button class="btn btn-primary position-absolute end-0 top-0">
+                    Logout
+                </button>
+            </a>
+
+            {% else %}
+            <a formmethod = "POST" href="/login">
+                <button class="btn btn-primary position-absolute end-0 top-0">
+                    Login
+                </button>
+            </a>
+            {% endif %}
+
+        {% endif %}
+       
     </div>
 </header>
 <main class="pt-sm-3 flex-grow-1">

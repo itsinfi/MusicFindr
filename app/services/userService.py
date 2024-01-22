@@ -3,6 +3,8 @@ import re
 from app.models import userModel as u
 from bcrypt import _bcrypt
 
+from flask import session
+
 class UserServiceError(Exception):
     """
     Custom Error Klasse für Methoden des UserService\n
@@ -14,7 +16,20 @@ class UserServiceError(Exception):
 
 class UserService:
     allUsers = []
-    loggedUser = None
+
+    @staticmethod
+    def checkCurrentUserIsLoggedIn() -> bool:
+        if "username" in session:
+            return True
+        else:
+            return False
+        
+    @staticmethod
+    def getSessionUsername() -> str:
+        if UserService.checkCurrentUserIsLoggedIn:
+            return session["username"]
+        else:
+            return None
 
     #only for testing
     @staticmethod
@@ -78,19 +93,27 @@ class UserService:
     @staticmethod
     def login(password: str, username: str):
         errorMessage = "Wrong username or password."
-        print(password)
-        print(type(password))
+
         if (UserService.usernameExists(username)):
             user = UserService.getUserViaUsername(username)
             if UserService.checkPassword(password, user.password.encode()):
                 # log in
-                UserService.loggedUser = user
+                session["userId"] = user.id
+                session["username"] = user.username
             else:
                 raise UserServiceError(errorMessage)
         else:
             raise UserServiceError(errorMessage)
 
-    
+    @staticmethod
+    def logout():
+        if "username" in session:
+            # session["username"] = None
+            # session["userId"] = None
+            # session.clear
+
+            session.pop("username")
+            session.pop("userId")
 
     @staticmethod
     def hashPassword(password: str) -> bytes:

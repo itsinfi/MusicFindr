@@ -1,6 +1,7 @@
-from flask import render_template
+from flask import render_template, session
 from app.services.playlistService import PlaylistService as p
 from app.services import tagService as t
+from app.services import userService
         
 class StartPage:
     @staticmethod
@@ -21,5 +22,5 @@ class StartPage:
 
         random_tags = t.TagService.getThreeRandomTags()
         
-        return render_template('content/start.html', shuffled_playlist=shuffled_playlist, playlists=tagTitles, random_tags = random_tags)
+        return render_template('content/start.html', shuffled_playlist=shuffled_playlist, playlists=tagTitles, random_tags = random_tags, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
  

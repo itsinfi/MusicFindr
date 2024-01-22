@@ -1,7 +1,7 @@
 from flask import render_template
-from app.views import view as v
+from app.services import userService
 
-class SearchResults(v.View):
+class SearchResults():
     @staticmethod
     def loadPage(query: str) -> render_template:
         from app.services import userService as u, playlistService as p, tagService as t
@@ -25,7 +25,7 @@ class SearchResults(v.View):
                             continue
                         playlistTagsTitles.append(tag.title)
                     tagTitles[playlist.id] = playlistTagsTitles
-            return render_template('content/searchResults.html', query=query, result=result, playlists=tagTitles)
+            return render_template('content/searchResults.html', query=query, result=result, playlists=tagTitles, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
         except p.PlaylistSearchServiceError as e:
             raise e
 

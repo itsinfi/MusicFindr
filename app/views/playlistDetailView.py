@@ -1,9 +1,9 @@
-from app.views import view as v
 from app.services import playlistService
 from app.services import tagService
+from app.services import userService
 from flask import render_template
 
-class PlaylistDetailView(v.View):
+class PlaylistDetailView():
     @staticmethod
     def loadPage(pid: int) -> render_template:
         try:
@@ -20,4 +20,4 @@ class PlaylistDetailView(v.View):
             raise e
         
 
-        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, tags = tags)
+        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, tags = tags, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
