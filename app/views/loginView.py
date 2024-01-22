@@ -7,6 +7,9 @@ class LoginView():
         # from app.services import userService
         from flask import render_template
 
+        if (userService.UserService.checkCurrentUserIsLoggedIn()):
+            return redirect("/")
+
         if request.method == 'POST':
             userService.UserService.login(request.form['password'], request.form['userName'])
             return redirect("/")
