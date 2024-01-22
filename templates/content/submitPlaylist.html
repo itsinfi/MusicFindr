@@ -1,0 +1,17 @@
+{% extends 'wrappers/headerAndFooter.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Submit your playlist!</h1>
+
+    <form method="POST" action="/submitPlaylist">
+        <p>Name: <input type = "text" name = "title" /></p>
+        <p>Link: <input type = "text" name = "link" /></p>
+        <p>Tags: <input type = "text" name = "tags" /></p>
+        <p>Description: <input type = "text" name = "description"></p>
+
+        <p><input type = "submit" value = "submit" /></p>
+    </form>
+
+{% endblock %}

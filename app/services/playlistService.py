@@ -483,6 +483,10 @@ class PlaylistService:
         shuffled_playlist = PlaylistService.allPlaylists.copy()
         shuffle(shuffled_playlist)
         return shuffled_playlist
+
+    @staticmethod
+    def tagsToTagList(tags: str) -> list[str]:
+        return tags.split(',')
     
     # @staticmethod
     # def getSortedPlaylist():

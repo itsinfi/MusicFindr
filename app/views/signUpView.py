@@ -9,7 +9,7 @@ class SignUpView():
 
         if request.method == 'POST':
             userService.UserService.createUser(request.form['password'], request.form['userName'])
-            return redirect("login")
+            return redirect("/login")
 
 
         #TODO: add return statement

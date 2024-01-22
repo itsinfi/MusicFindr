@@ -7,7 +7,7 @@ from app.views import logoutView
 from app.views import editProfileView
 from app.views import searchresults
 from app.views import playlistDetailView
-from app.services import playlistService
+from app.views import submitPlaylistView
 
 from flask import Blueprint, app, render_template, request
 from markupsafe import escape
@@ -40,7 +40,6 @@ def login():
 def logout():
     return logoutView.logout()
 
-
 @blueprint.route('/editProfile')
 def editProfile():
     return editProfileView.EditProfileView.loadPage()
@@ -48,6 +47,10 @@ def editProfile():
 @blueprint.route('/playlist/<pid>')
 def playlistDetail(pid: int):
     return playlistDetailView.PlaylistDetailView.loadPage(pid)
+
+@blueprint.route('/submitPlaylist', methods = ['POST', 'GET'])
+def submitPlaylist():
+    return submitPlaylistView.SubmitPlaylistView.loadPage()
 
 @blueprint.route('/search/<query>')
 def search(query):

@@ -14,11 +14,19 @@
         {% if not hidebutton %}
         
             {% if loggedin %}
-            <a href="/logout">
-                <button class="btn btn-primary position-absolute end-0 top-0">
-                    Logout
-                </button>
-            </a>
+            <div>
+                <a href="/logout">
+                    <button class="btn btn-primary position-absolute end-0 top-0">
+                        Logout
+                    </button>
+                </a>
+
+                <a href="/submitPlaylist">
+                    <button class="btn btn-primary position-relative end-0 top-0">
+                        Submit Playlist
+                    </button>
+                </a>
+            </div>
 
             {% else %}
             <a formmethod = "POST" href="/login">
