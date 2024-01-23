@@ -22,5 +22,5 @@ class StartPage:
 
         random_tags = t.TagService.getThreeRandomTags()
         
-        return render_template('content/start.html', shuffled_playlist=shuffled_playlist, playlists=tagTitles, random_tags = random_tags, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
+        return render_template('content/start.html', shuffled_playlist=shuffled_playlist, playlists=tagTitles, random_tags = random_tags, loggedin=userService.UserService.checkCurrentUserIsLoggedIn(), isStartPage=True)
  

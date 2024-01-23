@@ -5,7 +5,7 @@
 {% block content %}
   {% for playlist in result %}
   <a href="../playlist/{{ playlist.id }}">
-    <div class="bg-dark-subtle rounded-3 shadow">
+    <div class="bg-gradient rounded-3 shadow">
       <div class="p-3">
         <h1>{{ playlist.title }}</h1>
       <a id = "link" href={{ playlist.link }}>Click here to listen!</a>

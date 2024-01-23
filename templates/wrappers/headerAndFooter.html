@@ -4,6 +4,19 @@
 {% block body %}
 
 <header class="bg-dark position-relative d-flex justify-content-center align-items-center">
+
+
+    {% if isStartPage %}
+    <div>
+        <a href="/submitPlaylist">
+            <button class="btn btn-primary position-absolute start-0 top-0">
+                Submit Playlist
+            </button>
+        </a>
+    </div>
+    {% endif %}
+
+
     <div>
         <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 60px;" class="h1">
             MusicFindr
@@ -16,14 +29,8 @@
             {% if loggedin %}
             <div>
                 <a href="/logout">
-                    <button class="btn btn-primary position-absolute end-0 top-0">
+                    <button class="btn btn-danger position-absolute end-0 top-0">
                         Logout
-                    </button>
-                </a>
-
-                <a href="/submitPlaylist">
-                    <button class="btn btn-primary position-relative end-0 top-0">
-                        Submit Playlist
                     </button>
                 </a>
             </div>
@@ -45,9 +52,9 @@
     {% block content %}{% endblock %}
 
 </main>
-<footer class="bg-dark-subtle text-light text-center pb-sm-1 pt-sm-3 sticky-bottom rounded-top-3">
+<footer style="opacity: 0.8;" class="bg-dark text-light text-center pb-sm-1 pt-sm-3 sticky-bottom rounded-top-3 shadow">
     <div class="container">
-        <p>&copy;2024 masters of designing but not thinking.</p>
+        <p style="opacity: 0.6;" class="text-light">&copy;2024 masters of designing but not thinking.</p>
     </div>
 </footer>
 

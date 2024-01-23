@@ -6,6 +6,9 @@ class SubmitPlaylistView():
     def loadPage() -> render_template:
         if userService.UserService.checkCurrentUserIsLoggedIn():
 
+            if not (userService.UserService.checkCurrentUserIsLoggedIn()):
+                return redirect("/")
+
             if request.method == 'POST':
                 tags = playlistService.PlaylistService.tagsToTagList(request.form['tags'])
                 playlistService.PlaylistService.createPlaylist(request.form['link'], request.form['title'], request.form['description'], tags, session['userId'])

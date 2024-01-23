@@ -155,7 +155,7 @@ class TagService:
 
         #Suchen nach Tag mit dem Title
         for tag in TagService.allTags:
-            if tag.title == title:
+            if tag.title.lower() == title.lower():
                 return True
         
         #TagServiceError, falls nicht gefunden

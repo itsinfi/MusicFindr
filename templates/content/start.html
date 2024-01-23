@@ -7,7 +7,9 @@
     <div class="d-flex flex-column justify-content-between align-items-center my-5">
    
         <!-- Hier ist die Suchleiste -->
-        <input style="width: 500px" type="text" name="query" placeholder="Search..." id="searchbar" onkeydown="search()">
+        <div class="shadow">
+          <input style="width: 500px" class="input-group-text" type="text" name="query" placeholder="Search..." id="searchbar" onkeydown="search()">
+        </div>
         <!-- <input type="submit" value="Search" onclick="search()"> -->
         <div style="margin-bottom: 30px;"></div>
         <div>
@@ -17,20 +19,21 @@
         </p>
         {% endfor %}
         </div>
-        <div style="margin-bottom: 450px;"></div>
+        <div style="margin-bottom: 400px;"></div>
 
         <div class="arrow-down"></div>
-        <div style="margin-bottom: 50px;"></div>
+        <div style="margin-bottom: 0px;"></div>
         <!--drop-down menü-->
         <!-- <select name="playlist_order" id="playlist_order" onchange="playlist_order()">
             <option value="shuffled">shuffled</option>
             <option value="sorted">sorted</option>
         </select>
         <div style="margin-bottom: 20px;"></div>  -->
-        <ul>
+        <ul class="p-5">
   {% for playlist in shuffled_playlist %}
+  <div class="pt-sm-4"></div>
  <a href="../playlist/{{ playlist.id }}">
-    <div class="bg-dark-subtle rounded-3 shadow">
+    <div class="bg-gradient rounded-3 shadow">
       <div class="p-3">
         <h1>{{ playlist.title }}</h1>
       <a id = "link" href={{ playlist.link }}>Click here to listen!</a>
@@ -46,7 +49,6 @@
       </div>
     </div>
   </a>
-  <div class="pb-sm-4"></div>
   {% endfor %}
         </ul>
     </div>

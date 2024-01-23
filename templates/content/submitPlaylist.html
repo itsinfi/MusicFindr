@@ -3,15 +3,24 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <h1>Submit your playlist!</h1>
 
-    <form method="POST" action="/submitPlaylist">
-        <p>Name: <input type = "text" name = "title" /></p>
-        <p>Link: <input type = "text" name = "link" /></p>
-        <p>Tags: <input type = "text" name = "tags" /></p>
-        <p>Description: <input type = "text" name = "description"></p>
+    <div class="p-5 center align-items-center mx-auto">
+        <div style="width: 500px;" class="mx-auto align-items-center bg-gradient center rounded-3 shadow p-3">
+            <h1 class="center h1 pb-sm-3">Submit your playlist!</h1>
+            <form class=".form-control-plaintext display-flex center px-md-3" method="POST" action="/submitPlaylist">
+                <div class="px-md-3 pb-sm-2">
+                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "title" placeholder="Title" /></p>
+            
+                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "link" placeholder="Link" /></p>
 
-        <p><input type = "submit" value = "submit" /></p>
-    </form>
+                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "tags" placeholder="Tags (e.g. 'Cyberpunk, Phonk,...')" /></p>
+            
+                    <p class="d-flex flex-column"><textarea style="min-height: 25vh;" class="input-group-text" type = "description" name = "description" placeholder="Description"></textarea></p>
+                </div>
+        
+                <p class="px-3"><input class="input-group btn btn-primary shadow" type = "submit" value = "submit" /></p>
+            </form>
+        </div>
+    </div>
 
 {% endblock %}

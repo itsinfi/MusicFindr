@@ -486,7 +486,8 @@ class PlaylistService:
 
     @staticmethod
     def tagsToTagList(tags: str) -> list[str]:
-        return tags.split(',')
+        tagList = tags.split(',')
+        return [tag.strip() for tag in tagList]
     
     # @staticmethod
     # def getSortedPlaylist():
