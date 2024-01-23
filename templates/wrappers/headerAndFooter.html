@@ -6,7 +6,7 @@
 <header class="bg-dark position-relative d-flex justify-content-center align-items-center">
 
 
-    {% if isStartPage %}
+    {% if isStartPage and not hidebutton and loggedin %}
     <div>
         <a href="/submitPlaylist">
             <button class="btn btn-primary position-absolute start-0 top-0">
