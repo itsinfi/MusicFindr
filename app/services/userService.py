@@ -169,11 +169,7 @@ class UserService:
         checks a password for the following criteria\n
         (throws an UserServiceException if not fulfilled):
         - not empty
-        - at least 8 character long
-        - at least 1 capital letter
-        - at least 1 small letter
-        - at least 1 numeric character
-        - at least 1 special symbol
+        - at least 6 character long
         """
 
         #Checken, ob das Passwort leer ist
@@ -181,21 +177,8 @@ class UserService:
             raise UserServiceError("The password is empty. The field is required.")
         
         #Checken, ob das Passwort zu kurz ist
-        if not len(password) > 7:
+        if not len(password) >= 6:
             raise UserServiceError("The password is too short. At least 8 characters are required.")
-        
-        #Characters checken
-        if not re.search(r'[A-Z]', password):
-            raise UserServiceError("The password must contain at least one capital letter.")
-        
-        if not re.search(r'[a-z]', password):
-            raise UserServiceError("The password must contain at least one small letter.")
-        
-        if not re.search(r'[0-9]', password):
-            raise UserServiceError("The password must contain at least one number.")
-        
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>_-]', password):
-            raise UserServiceError("The password must at least contain one special character.")
         
         #Anforderungen erfüllt
         return True
