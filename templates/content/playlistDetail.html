@@ -59,4 +59,16 @@
     {% endif %}
 
     <p id="description">Description: {{ description }}</p>
+
+
+    {% if platform == "soundcloud" %}
+        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="{{ 'https://w.soundcloud.com/player/?url=' + link }}"></iframe>
+    {% endif %}
+
+    {% if platform == "spotify" %}
+    <div class="center">
+        <iframe src="{{ embeddedLink }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+    </div>
+    {% endif %}
+
 {% endblock %}
