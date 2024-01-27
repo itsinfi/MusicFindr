@@ -11,13 +11,23 @@ class SignUpView():
             return redirect("/")
 
         if request.method == 'POST':
-            userService.UserService.createUser(request.form['password'], request.form['userName'])
-            return redirect("/login")
+            try:
+                usernameError = ""
+                userService.UserService.validateUsername(request.form['userName'])
+            except userService.UserServiceError as e:
+                usernameError = e
 
+            try:
+                passwordError = ""
+                userService.UserService.validatePassword(request.form['password'])
+            except userService.UserServiceError as e:
+                passwordError = e
 
-        #TODO: add return statement
-
-        # try:
-        return render_template('content/signUp.html', hidebutton=True)
-        #TODO: add except statement, add custom error type
-        # except 
+            if usernameError or passwordError:
+                return render_template('content/signUp.html', hidebutton=True, usernameError = usernameError, passwordError = passwordError)
+            else:
+                userService.UserService.createUser(request.form['password'], request.form['userName'])
+                return redirect("/login")
+            
+        
+        return render_template('content/signUp.html', hidebutton=True, usernameError = False, passwordError = False)

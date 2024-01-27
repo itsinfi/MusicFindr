@@ -10,8 +10,14 @@
             <form class=".form-control-plaintext display-flex center px-md-3" method="POST" action="">
                 <div class="px-md-3 pb-sm-2">
                     <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "userName" placeholder="Username" /></p>
+                    {% if usernameError %}
+                        <p class="text-danger">{{ usernameError | safe }}</p>
+                    {% endif %}
             
                     <p class="d-flex flex-column"><input class="input-group-text" type = "password" name = "password" placeholder="Password" /></p>
+                    {% if passwordError %}
+                        <p class="text-danger">{{ passwordError | safe }}</p>
+                    {% endif %}
                 </div>
         
                 <p class="px-3"><input class="input-group btn btn-primary shadow" type = "submit" value = "submit" /></p>
