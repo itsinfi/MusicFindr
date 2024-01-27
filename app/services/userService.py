@@ -137,27 +137,40 @@ class UserService:
         checks an username for the following criteria\n
         (throws an UserServiceException if not fulfilled):
         - not empty
-        - at least 4 character long
+        - at least 3 character long
         - maximum of 20 characters long
         - only contains letters (a-z, A-Z), numbers and underscores
         """
 
+        #Error String (erstmal leer)
+        error = ""
+
         #Checken, ob der Username leer ist
         if not len(username) > 0:
-            raise UserServiceError("The username is empty. The field is required.")
+            error += "- The username is empty. The field is required."
         
         #Checken, ob der Username zu kurz ist
-        if not len(username) >= 4:
-            raise UserServiceError("The username is too short. At least 4 characters are required.")
+        if not len(username) >= 3:
+            if error:
+                error += "<br>"
+            error += "- The username is too short. At least 3 characters are required."
 
         #Checken, ob der Username zu lang ist
         if not len(username) <= 20:
-            raise UserServiceError("The username is too long. It can be no more than 20 characters long.")
+            if error:
+                error += "<br>"
+            error+= "- The username is too long. It can be no more than 20 characters long."
         
         #Characters checken
         regex = r"^[a-zA-Z0-9_]+$"
         if not (re.match(regex, username)):
-            raise UserServiceError("The username contains invalid characters. Allowed are only small letters, numbers and underscores.")
+            if error:
+                error += "<br>"
+            error += "- The username contains invalid characters. Allowed are only small letters, numbers and underscores."
+        
+        #Falls der Error String nicht leer ist, den Error raisen
+        if error:
+            raise UserServiceError(error)
         
         #Anforderungen erfüllt
         return True
@@ -169,33 +182,25 @@ class UserService:
         checks a password for the following criteria\n
         (throws an UserServiceException if not fulfilled):
         - not empty
-        - at least 8 character long
-        - at least 1 capital letter
-        - at least 1 small letter
-        - at least 1 numeric character
-        - at least 1 special symbol
+        - at least 6 character long
         """
+
+        #Error String (erstmal leer)
+        error = ""
 
         #Checken, ob das Passwort leer ist
         if not len(password) > 0:
-            raise UserServiceError("The password is empty. The field is required.")
+            error += "The password is empty. The field is required."
         
         #Checken, ob das Passwort zu kurz ist
-        if not len(password) > 7:
-            raise UserServiceError("The password is too short. At least 8 characters are required.")
+        if not len(password) >= 6:
+            if error:
+                error += "<br>"
+            error += "The password is too short. At least 6 characters are required."
         
-        #Characters checken
-        if not re.search(r'[A-Z]', password):
-            raise UserServiceError("The password must contain at least one capital letter.")
-        
-        if not re.search(r'[a-z]', password):
-            raise UserServiceError("The password must contain at least one small letter.")
-        
-        if not re.search(r'[0-9]', password):
-            raise UserServiceError("The password must contain at least one number.")
-        
-        if not re.search(r'[!@#$%^&*(),.?":{}|<>_-]', password):
-            raise UserServiceError("The password must at least contain one special character.")
+        #Falls der Error String nicht leer ist, den Error raisen
+        if error:
+            raise UserServiceError(error)
         
         #Anforderungen erfüllt
         return True
