@@ -42,6 +42,29 @@ function toggleTagsForm(){
     }
 }
 
+
+function addTagsToPlaylist(pid) {
+
+    var searchfield = document.getElementById("newTags").value.trim()
+    if (event.keyCode === 13 && searchfield !== "") { 
+
+        var tagStrings = document.getElementById('newTags').value
+
+        request = new XMLHttpRequest()
+        request.open("POST", "/addTagsToPlaylist", true)
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+
+        request.onload = function () {
+            location.reload()
+        }
+
+        var data = JSON.stringify({ pid: pid, tagStrings: tagStrings })
+        request.send(data)
+    }
+
+    
+}
+
 // function playlist_order() {
 //     var order = document.getelementbyid("playlist_order").value.trim()
 //     var currenturl = window.location.href + order;

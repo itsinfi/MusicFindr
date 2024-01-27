@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask
+from flask import Flask, jsonify, request, session
 from flask import url_for
 
 from app import services as s
@@ -35,6 +35,21 @@ def create_app():
     #Bei jeglicher Exception wird ein Dialog angezeigt in der App:
     #Zwar kein guter Stil, aber eine einfache Lösung für unseren Prototypen Custom Error Messages zu definieren
     c.error.ErrorDialog.displayErrorMessage(app)
+
+    @app.route('/addTagsToPlaylist', methods=['POST'])
+    def addTagsToPlaylist():
+        data = request.get_json()
+
+        if "username" in session:
+            pid = int(data.get("pid"))
+            tagStrings = str(data.get("tagStrings"))
+
+            print(data)
+
+            additionalTags = s.playlist.PlaylistService.tagsToTagList(tagStrings)
+            for tag in additionalTags:
+                s.playlist.PlaylistService.addTag(pid, tag)
+            return jsonify({'status': 'success'})
     
     #Alle Routen ausgeben (nur zum Testen)
     with app.test_request_context():

@@ -6,15 +6,6 @@ from flask import render_template, request
 class PlaylistDetailView():
     @staticmethod
     def loadPage(pid: int) -> render_template:
-        if userService.UserService.checkCurrentUserIsLoggedIn():
-
-            if request.method == 'POST':
-                additionalTags = playlistService.PlaylistService.tagsToTagList(request.form['additionalTags'])
-                print(additionalTags)
-                for tag in additionalTags:
-                    print("for schleife")
-                    print(tag)
-                    playlistService.PlaylistService.addTag(int(pid), tag)
         try:
             playlist = playlistService.PlaylistService.readPlaylist(int(pid))
             tags = []

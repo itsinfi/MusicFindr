@@ -115,9 +115,9 @@ class sqlService:
     @staticmethod
     def updateDB():
         sqlService.updateVotes()
-        # sqlService.updatePlaylistTags()
+        sqlService.updateTags()
+        sqlService.updatePlaylistTags()
         sqlService.updatePlaylists()
-        # sqlService.updateTags()
         sqlService.updateUsers()
 
     @staticmethod
