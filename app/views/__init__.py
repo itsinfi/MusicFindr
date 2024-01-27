@@ -44,7 +44,7 @@ def logout():
 def editProfile():
     return editProfileView.EditProfileView.loadPage()
 
-@blueprint.route('/playlist/<pid>')
+@blueprint.route('/playlist/<pid>', methods = ['POST', 'GET'])
 def playlistDetail(pid: int):
     return playlistDetailView.PlaylistDetailView.loadPage(pid)
 

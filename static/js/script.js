@@ -31,6 +31,8 @@ function toggleTagsForm(){
     if (currentDisplay === "") {
 
         document.getElementById("add-tags").style.display = "block";
+        document.getElementById("add-tags").style.display = "flex";
+        
         document.getElementById("toggleButton").textContent = "-";
 
     } else{

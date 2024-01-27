@@ -15,12 +15,14 @@
 
         <!-- additional tags button and form -->
         <button id="toggleButton" class="btn btn-primary badge" onclick="toggleTagsForm()">+</button>
-
     </div>
     
-<div class="form-popup" id="add-tags">
-    <input type="text" class="input-group-text" placeholder="tag1, tag2, ..." name="additionalTags" required>
-</div>
+    <div id="add-tags">
+        <form class="form-popup" method="POST" action = "/playlist/{{ pid }}">
+            <input class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required>
+        </form>
+        <input class="btn btn-primary" type = "submit" value = "submit" />
+    </div>
 
     <p id="description">Description: {{ description }}</p>
 {% endblock %}

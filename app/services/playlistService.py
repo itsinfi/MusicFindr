@@ -220,6 +220,10 @@ class PlaylistService:
 
         #Suchen nach Playlist mit der ID
         for playlist in PlaylistService.allPlaylists:
+            # print("\nid:")
+            # print(playlist.id)
+            # print("\nname:")
+            # print(playlist.title)
             if playlist.id == id:
                 return playlist
             
@@ -365,26 +369,38 @@ class PlaylistService:
         - tag could not be found/created
         """
         from app.services import tagService as tag
+        from app.models import tagModel
 
         #Playlist wird ausgelesen (+ Prüfung, ob Playlist existiert)
         playlist = PlaylistService.readPlaylist(id)
-
-        #Tag erstellen, falls es noch nicht existiert
-        try:
-            tag.TagService.createTag(tagTitle)
-        except tag.TagServiceError as e:
-            print(e)
         
+        _t = None
+
         #Tag auslesen
+        print("trying to read tag")
+        print(tagTitle)
         try:
-            _t = tag.TagService.findTag(tagTitle)
+            _t = tag.TagService.findTag(tagTitle) 
         
         #Falls nicht gefunden, PlaylistError ausgeben
         except tag.TagServiceError as e:
-            raise PlaylistServiceError(f"Could not add tag {tagTitle} to playlist with id {id}")
+            if _t is None:
+                #Tag erstellen, falls es noch nicht existiert
+                print("Trying to creat tag")
+                print(tagTitle)
+                try:
+                    tag.TagService.createTag(tagTitle)
+                except tag.TagServiceError as e:
+                    print(e)
+                    raise PlaylistServiceError(f"Could not add tag {tagTitle} to playlist with id {id}")
 
-        #Tag-ID der Liste in der Playlist ergänzen
-        playlist.tags.append(_t.id)
+        if _t is not None:
+            print(_t)
+            if _t.id in playlist.tags:
+                raise PlaylistServiceError(f"Tag {_t.title} already exists in Playlist with id {playlist.id}.")
+
+            #Tag-ID der Liste in der Playlist ergänzen
+            playlist.tags.append(_t.id)
         return
 
 
