@@ -152,16 +152,17 @@ class VoteService:
         raise VoteServiceError(f"Vote with id {id} could not be found or does not exist.")
 
 
-    #########DO WE NEED THIS??????
-    # @staticmethod
-    # def findVote(uid: int, pid: int, tid: int) -> v.VoteModel:
-    #     for vote in VoteService.allVotes:
-    #         if (vote.uid == uid and vote.pid == pid and vote.tid == tid):
-    #             print(vote)
-    #             return vote
-    #     
-    #     print(f"Vote does not exist so far!")
-    #     return
+    @staticmethod
+    def findVote(uid: int, pid: int, tid: int) -> v.VoteModel:
+        """
+        gibt einen vote mit den angegebenen IDs zurück
+        """
+        for vote in VoteService.allVotes:
+            if (vote.uid == uid and vote.pid == pid and vote.tid == tid):
+                print(vote)
+                return vote
+        
+        raise VoteServiceError(f"Vote does not exist so far!")
 
 
     @staticmethod
@@ -212,11 +213,11 @@ class VoteService:
             return
         
         #Prüfung, ob voteValue Wert 1 oder -1 ist
-        if not voteValue == 1 or voteValue == -1:
+        if voteValue not in [1, -1]:
             raise VoteServiceError(f"Vote value can only be 1 or -1 and not {voteValue}.")
         
         #Vote Daten werden geupdatet
-        vote.value = voteValue  
+        vote.voteValue = voteValue  
 
         #TODO: kann später entfernt werden, wird von der Datenbank übernommen
         vote.updatedAt = int(datetime.now().timestamp())

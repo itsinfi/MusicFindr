@@ -263,13 +263,13 @@ class sqlService:
                 "uid"           :   appVote.uid,
                 "tid"           :   appVote.tid,
                 "pid"           :   appVote.pid,
-                "value"         :   appVote.value,
+                "value"         :   appVote.voteValue,
                 "createdAt"     :   appVote.createdAt,
-                "updatedAt"     :   appVote.updateddAt
+                "updatedAt"     :   appVote.updatedAt
             }
 
-            if not( appVote.id in appVotes ):
-                sqlService.insertIntoTable("Tag", appTagDict)
+            if not( appVote.id in dbVotes ):
+                sqlService.insertIntoTable("Votes", appVoteDict)
                 continue
 
             dbVote = dbVotes[appVote.id]
@@ -280,7 +280,7 @@ class sqlService:
                 "pid"           :   dbVote["pid"],
                 "value"         :   dbVote["value"],
                 "createdAt"     :   dbVote["createdAt"],
-                "updatedAt"     :   dbVote["updateddAt"]
+                "updatedAt"     :   dbVote["updatedAt"]
             }
 
             if not( dbVoteDict == appVoteDict ):

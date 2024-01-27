@@ -29,3 +29,16 @@ function openPlaylistDetail(id) {
 //     var currenturl = window.location.href + order;
 //     var win = window.open(currenturl, '_self');  win.focus();
 // }
+
+function vote(tid, pid, voteValue) {
+    var request = new XMLHttpRequest()
+    request.open("POST", "/vote", true)
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+
+    request.onload = function () {
+        location.reload();
+    };
+
+    var data = JSON.stringify({ tid: tid, pid: pid, voteValue: voteValue })
+    request.send(data)
+}
