@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 class PlaylistModel:
-    def __init__(self, id: int, link: str, title: str, description: str, createdBy: int, createdAt: int, updatedAt: int):
+    def __init__(self, id: int, link: str, title: str, description: str, createdBy: int, createdAt: int, updatedAt: int, platform: str):
         self.id = id
         self.link = link or ""
         self.title = title or ""
@@ -11,6 +11,7 @@ class PlaylistModel:
         self.createdBy = createdBy
         self.createdAt = createdAt or int(datetime.now().timestamp())
         self.updatedAt = updatedAt or int(datetime.now().timestamp())
+        self.platform = platform or ""
     
     def __repr__(self) -> str:
         return f"""Playlist {{
@@ -22,4 +23,5 @@ class PlaylistModel:
             createdBy={self.createdBy};
             createdAt={self.createdAt};
             updatedAt={self.updatedAt};
+            platform={self.platform};
         }}"""

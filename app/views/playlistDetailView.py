@@ -31,6 +31,5 @@ class PlaylistDetailView():
 
         except  playlistService.PlaylistServiceError as e:
             raise e
-        
 
-        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
+        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, platform = playlist.platform, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())

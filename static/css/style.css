@@ -34,7 +34,7 @@ body {
     margin: 0;
 }
 
-a {
+.remove-style {
     color: inherit;
     text-decoration: none;
 }

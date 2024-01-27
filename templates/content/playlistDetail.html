@@ -5,7 +5,12 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
-    <a id = "link" href={{ link }}>Click here to listen!</a>
+    <div class="d-flex flex-row">
+        <div class="center pe-md-1">
+            <img src="{{ url_for('static', filename='assets/' + platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
+        </div>
+        <a id = "{{ pid }}" href="{{ link }}">Click here to listen!</a>
+    </div>
     <div id="tag-descriptor">Tags:
         {% for playlistTagTuple in tags %}
         <p class="badge bg-secondary">
@@ -22,7 +27,7 @@
                 {% endif %}
             {% endif %}
         
-            <a href="/search/{{ playlistTagTuple[1].title }}" style="text-decoration: none; color: white">{{ playlistTagTuple[1].title }}</a>
+            <a class="remove-style" href="/search/{{ playlistTagTuple[1].title }}" style="text-decoration: none; color: white">{{ playlistTagTuple[1].title }}</a>
             
             {% if loggedin %}
                 {% if votes[playlistTagTuple[1].id] == 1 %}

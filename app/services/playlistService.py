@@ -49,9 +49,11 @@ class PlaylistService:
         #Prüfung, ob Playlist-ID bereits existiert
         if (PlaylistService.playlistExists(id)):
             raise PlaylistServiceError(f"Playlist with id {id} already exists.")
+        
+        platform = PlaylistService.getLinkPlatform(link)
 
         #Playlist erstellen
-        playlist = p.PlaylistModel(id, link, title, description, createdBy, createdAt, updatedAt)
+        playlist = p.PlaylistModel(id, link, title, description, createdBy, createdAt, updatedAt, platform)
 
         #Playlist zur Playlist list hinzufügen
         PlaylistService.allPlaylists.append(playlist)
@@ -95,8 +97,10 @@ class PlaylistService:
         while (PlaylistService.playlistExists(id)):
             id += 1
 
+        platform = PlaylistService.getLinkPlatform(link)
+
         #Playlist erstellen
-        playlist = p.PlaylistModel(id, link, title, description, createdBy, int(datetime.now().timestamp()), int(datetime.now().timestamp()))
+        playlist = p.PlaylistModel(id, link, title, description, createdBy, int(datetime.now().timestamp()), int(datetime.now().timestamp()), platform)
 
         #Playlist zur Playlist list hinzufügen
         PlaylistService.allPlaylists.append(playlist)
@@ -501,6 +505,18 @@ class PlaylistService:
     def tagsToTagList(tags: str) -> list[str]:
         tagList = tags.split(',')
         return [tag.strip() for tag in tagList]
+    
+    @staticmethod
+    def getLinkPlatform(link: str) -> str:
+        if "open.spotify." in link:
+            return "spotify"
+        if "music.youtube." in link:
+            return "youtubemusic"
+        if "youtube." in link:
+            return "youtube"
+        if "soundcloud." in link:
+            return "soundcloud"
+        return ""
     
     # @staticmethod
     # def getSortedPlaylist():

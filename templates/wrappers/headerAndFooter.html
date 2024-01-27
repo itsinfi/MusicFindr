@@ -8,7 +8,7 @@
 
     {% if isStartPage and not hidebutton and loggedin %}
     <div>
-        <a href="/submitPlaylist">
+        <a class="remove-style" href="/submitPlaylist">
             <button class="btn btn-primary position-absolute start-0 top-0">
                 Submit Playlist
             </button>
@@ -18,7 +18,7 @@
 
 
     <div>
-        <a href="/">
+        <a class="remove-style" href="/">
             <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 60px;" class="h1">
                 MusicFindr
             </h1>
@@ -31,7 +31,7 @@
         
             {% if loggedin %}
             <div>
-                <a href="/logout">
+                <a class="remove-style" href="/logout">
                     <button class="btn btn-danger position-absolute end-0 top-0">
                         Logout
                     </button>
@@ -39,7 +39,7 @@
             </div>
 
             {% else %}
-            <a formmethod = "POST" href="/login">
+            <a class="remove-style" formmethod = "POST" href="/login">
                 <button class="btn btn-primary position-absolute end-0 top-0">
                     Login
                 </button>
