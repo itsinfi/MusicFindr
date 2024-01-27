@@ -159,7 +159,6 @@ class VoteService:
         """
         for vote in VoteService.allVotes:
             if (vote.uid == uid and vote.pid == pid and vote.tid == tid):
-                print(vote)
                 return vote
         
         raise VoteServiceError(f"Vote does not exist so far!")
@@ -285,7 +284,7 @@ class VoteService:
 
 
     @staticmethod
-    def deleteAllUserVotes(uid: int):
+    def deleteAllUserVotes(uid):
         """
         löscht alle Votes eines Users\n
         """
@@ -302,3 +301,11 @@ class VoteService:
                 print(e)
                 continue
         return
+    
+    @staticmethod
+    def getVoteNumberOnPlaylistTag(playlistTagTuple) -> int:
+        number = 0
+        for vote in VoteService.allVotes:
+            if (vote.pid == playlistTagTuple[0] and vote.tid == playlistTagTuple[1].id):
+                number += 1
+        return number

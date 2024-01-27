@@ -9,28 +9,28 @@ class PlaylistDetailView():
     def loadPage(pid: int) -> render_template:
         try:
             playlist = playlistService.PlaylistService.readPlaylist(int(pid))
-            tags = {}
+            tags = []
             for t in playlist.tags:
                 try:
-                    tag = tagService.TagService.readTag(t)
+                    playlistTagTuple = tagService.TagService.readTag(t)
                 except tagService.TagServiceError as e:
                     print(e)
                     continue
-                tags[tag.id] = tag.title
+                tags.append((playlist.id, playlistTagTuple))
             votes = {}
             if "username" in session:
-                for tid in tags.keys():
+                for playlistTagTuple in tags:
                     try:
-                        vote = voteService.VoteService.findVote(session["userId"], playlist.id, tid)
-                        votes[tid] = vote.voteValue
+                        vote = voteService.VoteService.findVote(session["userId"], playlist.id, playlistTagTuple[1].id)
+                        votes[playlistTagTuple[1].id] = vote.voteValue
                     except voteService.VoteServiceError as e:
-                        votes[tid] = 0
+                        votes[playlistTagTuple[1].id] = 0
             else:
-                for tid in tags.keys():
-                    votes[tid] = 0
+                for playlistTagTuple in tags:
+                    votes[playlistTagTuple[1].id] = 0
 
         except  playlistService.PlaylistServiceError as e:
             raise e
         
 
-        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, tags = tags, votes = votes, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
+        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())

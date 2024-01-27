@@ -39,8 +39,6 @@ def create_app():
     @app.route('/vote', methods=['POST'])
     def vote():
         data = request.get_json()
-
-        print(data)
         
         if "username" in session:
             tid = int(data.get("tid"))
@@ -59,7 +57,6 @@ def create_app():
                     s.vote.VoteService.updateVote(vote.id, voteValue)
                 else:
                     s.vote.VoteService.createVote(uid, pid, tid, voteValue)
-                print(s.vote.VoteService.allVotes)
                 return jsonify({'status': 'success'})
             except s.vote.VoteServiceError as e:
                 raise e
