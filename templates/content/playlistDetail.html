@@ -1,4 +1,5 @@
 {% extends 'wrappers/headerAndFooter.html' %}
+<script src="/static/js/script.js"></script>
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -9,29 +10,48 @@
         {% for playlistTagTuple in tags %}
         <p class="badge bg-secondary">
 
-            {% if votes[playlistTagTuple[1].id] == -1 %}
-                <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
-                    <i class="text-danger fas fa-arrow-down"></i>
-                </button>
-                {% else %}
-                <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '-1')" title="Vote against this tag!">
-                    <i class="text-light-emphasis fas fa-arrow-down"></i>
-                </button>
+            {% if loggedin %}
+                {% if votes[playlistTagTuple[1].id] == -1 %}
+                    <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
+                        <i class="text-danger fas fa-arrow-down"></i>
+                    </button>
+                    {% else %}
+                    <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '-1')" title="Vote against this tag!">
+                        <i class="text-light-emphasis fas fa-arrow-down"></i>
+                    </button>
+                {% endif %}
             {% endif %}
-            
+        
             <a href="/search/{{ playlistTagTuple[1].title }}" style="text-decoration: none; color: white">{{ playlistTagTuple[1].title }}</a>
             
-            {% if votes[playlistTagTuple[1].id] == 1 %}
-                <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
-                    <i class="text-primary fas fa-arrow-up"></i>
-                </button>
-            {% else %}
-                <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '1')" title="Vote for this tag!">
-                    <i class="text-light-emphasis fas fa-arrow-up"></i>
-                </button>
+            {% if loggedin %}
+                {% if votes[playlistTagTuple[1].id] == 1 %}
+                    <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
+                        <i class="text-primary fas fa-arrow-up"></i>
+                    </button>
+                {% else %}
+                    <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '1')" title="Vote for this tag!">
+                        <i class="text-light-emphasis fas fa-arrow-up"></i>
+                    </button>
+                {% endif %}
             {% endif %}
         </p>
         {% endfor %}
+
+        {% if loggedin %}
+            <!-- additional tags button and form -->
+            <button id="toggleButton" class="btn btn-primary badge" onclick="toggleTagsForm()">+</button>
+        {% endif %}
     </div>
+    
+    {% if loggedin %}
+        <div id="add-tags">
+            <!-- <form class="form-popup" onsubmit="addTagsToPlaylist('{{ pid }}')"> -->
+            <input id="newTags" class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required onkeydown="addTagsToPlaylist('{{ pid }}')">
+            <button class="btn btn-primary" onclick="addTagsToPlaylist('{{ pid }}')">Submit</button>
+            <!-- </form> -->
+        </div>
+    {% endif %}
+
     <p id="description">Description: {{ description }}</p>
 {% endblock %}

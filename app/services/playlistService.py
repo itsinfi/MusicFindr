@@ -220,6 +220,10 @@ class PlaylistService:
 
         #Suchen nach Playlist mit der ID
         for playlist in PlaylistService.allPlaylists:
+            # print("\nid:")
+            # print(playlist.id)
+            # print("\nname:")
+            # print(playlist.title)
             if playlist.id == id:
                 return playlist
             
@@ -364,27 +368,36 @@ class PlaylistService:
         - playlist with specified id does not exist
         - tag could not be found/created
         """
-        from app.services import tagService as tag
+        from app.services import tagService as ts
+
+        tag = None
 
         #Playlist wird ausgelesen (+ Prüfung, ob Playlist existiert)
         playlist = PlaylistService.readPlaylist(id)
 
-        #Tag erstellen, falls es noch nicht existiert
         try:
-            tag.TagService.createTag(tagTitle)
-        except tag.TagServiceError as e:
+            tag = ts.TagService.findTag(tagTitle)
+        except ts.TagServiceError as e:
             print(e)
+
+        print(type(tag))
+        print(tag)
         
-        #Tag auslesen
-        try:
-            _t = tag.TagService.findTag(tagTitle)
+        if tag is None:
+            try:
+                ts.TagService.createTag(tagTitle)
+                tag = ts.TagService.findTag(tagTitle)
+            except ts.TagServiceError as e:
+                raise PlaylistServiceError(e.message)
         
-        #Falls nicht gefunden, PlaylistError ausgeben
-        except tag.TagServiceError as e:
-            raise PlaylistServiceError(f"Could not add tag {tagTitle} to playlist with id {id}")
+        if tag.id in playlist.tags:
+            raise PlaylistServiceError(f"Tag {tagTitle} already exists in Playlist with id {id}")
 
         #Tag-ID der Liste in der Playlist ergänzen
-        playlist.tags.append(_t.id)
+        try:
+            playlist.tags.append(tag.id)
+        except Exception as e:
+            raise PlaylistServiceError(f"Tag {tagTitle} could not be added to Playlist with id {playlist.id}")
         return
 
 

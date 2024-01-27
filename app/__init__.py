@@ -61,6 +61,20 @@ def create_app():
             except s.vote.VoteServiceError as e:
                 raise e
                 
+    @app.route('/addTagsToPlaylist', methods=['POST'])
+    def addTagsToPlaylist():
+        data = request.get_json()
+
+        if "username" in session:
+            pid = int(data.get("pid"))
+            tagStrings = str(data.get("tagStrings"))
+
+            print(data)
+
+            additionalTags = s.playlist.PlaylistService.tagsToTagList(tagStrings)
+            for tag in additionalTags:
+                s.playlist.PlaylistService.addTag(pid, tag)
+            return jsonify({'status': 'success'})
     
     #Alle Routen ausgeben (nur zum Testen)
     with app.test_request_context():

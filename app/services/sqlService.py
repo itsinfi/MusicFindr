@@ -82,6 +82,7 @@ class sqlService:
 
     @staticmethod
     def insertIntoTable(tableName: str, columnValues: dict):
+        print("bjjnsnjsjnjnjnjgninjgnijninnnjj")
         with sqlService.engine.connect() as connection:
             # Generate column names and placeholders from the dictionary
             columns = ', '.join(columnValues.keys())
@@ -114,9 +115,9 @@ class sqlService:
     @staticmethod
     def updateDB():
         sqlService.updateVotes()
+        sqlService.updateTags()
         sqlService.updatePlaylistTags()
         sqlService.updatePlaylists()
-        sqlService.updateTags()
         sqlService.updateUsers()
 
     @staticmethod
