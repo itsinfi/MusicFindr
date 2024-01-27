@@ -26,3 +26,8 @@ body {
         transform: translateY(-10px); /* Der Pfeil bewegt sich nach unten */
     }
 }
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
