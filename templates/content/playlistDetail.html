@@ -1,4 +1,5 @@
 {% extends 'wrappers/headerAndFooter.html' %}
+<script src="/static/js/script.js"></script>
 
 {% block title %}{{ title }}{% endblock %}
 
@@ -11,6 +12,15 @@
             <a href="/search/{{ tag }}" style="text-decoration: none; color: white">{{ tag }}</a>
         </p>
         {% endfor %}
+
+        <!-- additional tags button and form -->
+        <button id="toggleButton" class="btn btn-primary badge" onclick="toggleTagsForm()">+</button>
+
     </div>
+    
+<div class="form-popup" id="add-tags">
+    <input type="text" class="input-group-text" placeholder="tag1, tag2, ..." name="additionalTags" required>
+</div>
+
     <p id="description">Description: {{ description }}</p>
 {% endblock %}
