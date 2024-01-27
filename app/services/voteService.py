@@ -307,5 +307,5 @@ class VoteService:
         number = 0
         for vote in VoteService.allVotes:
             if (vote.pid == playlistTagTuple[0] and vote.tid == playlistTagTuple[1].id):
-                number += 1
+                number += vote.voteValue
         return number

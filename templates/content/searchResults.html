@@ -12,8 +12,8 @@
       <div id="tag-descriptor">Tags:
           {% for t in playlists[playlist.id] %}
           <p class="badge bg-secondary">
-            <a href="../search/{{ t }}" style="text-decoration: none; color:white">
-              {{ t }}
+            <a href="../search/{{ t[1].title }}" style="text-decoration: none; color:white">
+              {{ t[1].title }}
           </p>
           {% endfor %}
         </div>

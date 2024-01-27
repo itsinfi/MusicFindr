@@ -12,11 +12,11 @@ class PlaylistDetailView():
             tags = []
             for t in playlist.tags:
                 try:
-                    playlistTagTuple = tagService.TagService.readTag(t)
+                    tag = tagService.TagService.readTag(t)
                 except tagService.TagServiceError as e:
                     print(e)
                     continue
-                tags.append((playlist.id, playlistTagTuple))
+                tags.append((playlist.id, tag))
             votes = {}
             if "username" in session:
                 for playlistTagTuple in tags:
