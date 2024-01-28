@@ -325,41 +325,40 @@ class PlaylistService:
         - playlist with specified id does not exist
         - tag requirements are not fulfilled (individual error message)
         """
-        from app.services import tagService as tag
+        from app.services import tagService as ts
 
         #Playlist wird ausgelesen (+ Prüfung, ob Playlist existiert)
         playlist = PlaylistService.readPlaylist(id)
 
-        #Tags checken
-        try:
-            for tagString in tagTitles:
-                tag.TagService.validateTitle(tagString)
-        except tag.TagServiceError as e:
-            raise PlaylistServiceError(e.message)
-        
-        #Neue Liste für Tags erstellen und durchiterieren
         tags = []
+
         for tagTitle in tagTitles:
-            
-            #Tag erstellen, falls es noch nicht existiert
+
+            tag = None
+
             try:
-                tag.TagService.createTag(tagTitle)
-            except tag.TagServiceError as e:
+                tag = ts.TagService.findTag(tagTitle)
+            except ts.TagServiceError as e:
                 print(e)
+        
+            if tag is None:
+                try:
+                    ts.TagService.createTag(tagTitle)
+                    tag = ts.TagService.findTag(tagTitle)
+                except ts.TagServiceError as e:
+                    print(PlaylistServiceError(e.message))
+                    continue
             
-            #Tag auslesen
-            try:
-                _t = tag.TagService.findTag(tagTitle)
-            
-            #Falls nicht gefunden, Schleifeniteration skippen
-            except tag.TagServiceError as e:
-                print(e)
+            if tag.id in tags:
+                print(f"Tag {tagTitle} already exists in Playlist with id {id}")
                 continue
 
-            #Gefundenen Tag der neuen Liste ergänzen
-            tags.append(_t.id)
-
-        #Alte Liste mit der neuen ersetzen
+            #Tag-ID der Liste in der Playlist ergänzen
+            try:
+                tags.append(tag.id)
+            except Exception as e:
+                raise PlaylistServiceError(f"Tag {tagTitle} could not be added to Playlist with id {playlist.id}")
+        
         playlist.tags = tags
         return
     
@@ -383,9 +382,6 @@ class PlaylistService:
             tag = ts.TagService.findTag(tagTitle)
         except ts.TagServiceError as e:
             print(e)
-
-        print(type(tag))
-        print(tag)
         
         if tag is None:
             try:
@@ -423,8 +419,6 @@ class PlaylistService:
 
         #Playlist wird gelöscht
         PlaylistService.allPlaylists.remove(playlist)
-
-        print(PlaylistService.allPlaylists)
 
         #Verbindungen zu Tags in der DB werden gelöscht
         sql.sqlService.deleteAllContainingID("TagPlaylist_Relationship", "pid", id)

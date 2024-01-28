@@ -36,7 +36,7 @@ class EditPlaylistView():
                         playlistService.PlaylistService.tagsToTagList(request.form['tags'])
                     )
                 
-                    return render_template('content/playlistDetail.html', pid = existing_playlist.id, title = existing_playlist.title, description = existing_playlist.description, link = existing_playlist.link, platform = existing_playlist.platform, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
+                    return redirect('/profile')
                 
             else:
                 # Playlist nicht gefunden

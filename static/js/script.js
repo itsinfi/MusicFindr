@@ -97,13 +97,18 @@ function deletePlaylist(pid) {
     request.send(data)
 }
 
-function updatePlaylist(pid, title, description, tagStrings) {
+function updatePlaylist(pid) {
+
+    var title = document.getElementById('title').value
+    var description = document.getElementById('description').value
+    var tagStrings = document.getElementById('tagStrings').value
+
     var request = new XMLHttpRequest()
     request.open("POST", "/updatePlaylist", true)
     request.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
 
     request.onload = function () {
-        location.reload();
+        location.href('/profile')
     };
 
     var data = JSON.stringify({ pid: pid, title: title, description: description, tagStrings: tagStrings })

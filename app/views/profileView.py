@@ -24,6 +24,6 @@ class ProfileView():
             playlists[playlist.id] = sorted(playlistTagTuples, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True)
 
         
-        return render_template('content/profile.html', user_playlists=user_playlists, playlists=playlists, current_user = current_user, current_username = current_username, loggedin=userService.UserService.checkCurrentUserIsLoggedIn(), isStartPage=True)
+        return render_template('content/profile.html', user_playlists=user_playlists, playlists=playlists, current_user = current_user, current_username = current_username, loggedin=userService.UserService.checkCurrentUserIsLoggedIn(), isProfile = True)
 
 

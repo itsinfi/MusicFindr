@@ -30,19 +30,26 @@
         {% if not hidebutton %}
         
             {% if loggedin %}
-            <div>
-                <a class="remove-style" href="/profile">
-                    <button class="btn btn-secondary position-absolute end-0 top-10 rounded-circle">
-                        <i class="fas fa-user"></i>
-                    </button>
-                </a>
+                {% if isProfile %}
+                    <div>
+                        <a class="remove-style" href="/logout">
+                            <button class="btn btn-danger position-absolute end-0 top-0">
+                                Logout
+                            </button>
+                        </a>
+                    </div>
+                    {% endif %}
 
-                <a class="remove-style" href="/logout">
-                    <button class="btn btn-danger position-absolute end-0 top-0">
-                        Logout
-                    </button>
-                </a>
-            </div>
+                    {% if isStartPage %}
+                    <div>
+                        <a class="remove-style" href="/profile">
+                            <button class="btn btn-secondary position-absolute end-0 top-0 rounded-circle">
+                                <i class="fas fa-user"></i>
+                            </button>
+                        </a>
+                    </div>
+                    {% endif %}
+                
 
             {% else %}
             <a class="remove-style" formmethod = "POST" href="/login">

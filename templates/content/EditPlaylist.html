@@ -9,11 +9,11 @@
             <h1 class="center h1 pb-sm-3">Edit your playlist!</h1>
             <form class=".form-control-plaintext display-flex center px-md-3" method="POST" action="/editPlaylist/{{ existing_playlist.id }}">
                 <div class="px-md-3 pb-sm-2">
-                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "title" id = " title" placeholder="Title" value=" {{ existing_playlist.title }} " required/></p>
+                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "title" id = "title" placeholder="Title" value="{{ existing_playlist.title }}" required/></p>
             
-                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "link" placeholder="Link (Must be YouTube, Soundcloud or Spotify)"  value=" {{ existing_playlist.link }} " readonly/></p>
+                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "link" placeholder="Link (Must be YouTube, Soundcloud or Spotify)"  value="{{ existing_playlist.link }}" readonly/></p>
 
-                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "tags" id = " tags" placeholder="Tags (e.g. 'Cyberpunk, Phonk,...')"  value=" {{ tags }} " required/></p>
+                    <p class="d-flex flex-column"><input class="input-group-text" type = "text" name = "tags" id = "tagStrings" placeholder="Tags (e.g. 'Cyberpunk, Phonk,...')"  value="{{ tags.strip() }}" required/></p>
             
                     <p class="d-flex flex-column"><textarea style="min-height: 25vh;" class="input-group-text" type = "description" name = "description" id = "description" placeholder="Description">{{ existing_playlist.description }}</textarea></p>
                 </div>
