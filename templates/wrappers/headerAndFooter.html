@@ -16,6 +16,10 @@
     </div>
     {% endif %}
 
+    {% if not isStartPage %}
+        {% include './components/backButton.html' %}
+    {% endif %}
+
 
     <div>
         <a class="remove-style" href="/">

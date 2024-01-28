@@ -304,6 +304,13 @@ class PlaylistService:
         #Description checken
         PlaylistService.validateDescription(description)
 
+        #Tags checken
+        try:
+            for tagString in tagStrings:
+                tag.TagService.validateTitle(tagString)
+        except tag.TagServiceError as e:
+            raise PlaylistServiceError(e.message)
+
         #Playlist Daten werden geupdatet
         playlist.title = title
         playlist.description = description

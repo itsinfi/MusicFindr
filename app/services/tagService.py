@@ -83,16 +83,16 @@ class TagService:
 
         #Checken, ob der Titel zu kurz ist
         if not len(title) > 0:
-            raise TagServiceError("The title is empty. The field is required.")
+            raise TagServiceError("The tags are empty. The field is required.")
 
         #Checken, ob der Titel zu lang ist
         if not len(title) < 32:
-            raise TagServiceError("The title is longer than 32 characters.")
+            raise TagServiceError("One tag is longer than 32 characters.")
         
         #Characters checken
         regex = r"^[A-Za-z0-9äöüß -_.,&()+#]+$"
         if not (re.match(regex, title)):
-            raise TagServiceError("The title contains invalid characters. Allowed are only letters, numbers and some commonly used symbols.")
+            raise TagServiceError("One tag contains invalid characters. Allowed are only letters, numbers and the following symbols: '-','_','.','&','(', ')', '+' and '#'.")
         
         #Anforderungen erfüllt
         return True
