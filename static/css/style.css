@@ -1,5 +1,7 @@
 body {
-    font-family:Verdana, Geneva, Tahoma, sans-serif
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    background: linear-gradient(30deg, rgb(5, 83, 57) 0%, rgb(96, 0, 93) 100%);
+    background-attachment: fixed;
 }
 
 .center {
