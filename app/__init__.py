@@ -69,13 +69,34 @@ def create_app():
             pid = int(data.get("pid"))
             tagStrings = str(data.get("tagStrings"))
 
-            print(data)
-
             additionalTags = s.playlist.PlaylistService.tagsToTagList(tagStrings)
             for tag in additionalTags:
                 s.playlist.PlaylistService.addTag(pid, tag)
             return jsonify({'status': 'success'})
     
+    @app.route('/deletePlaylist', methods=['POST'])
+    def deletePlaylist():
+        data = request.get_json()
+
+        if "username" in session:
+            pid = int(data.get("pid"))
+            
+            s.playlist.PlaylistService.deletePlaylist(pid)
+            return jsonify({'status': 'success'})
+        
+    @app.route('/updatePlaylist', methods=['POST'])
+    def updatePlaylist():
+        data = request.get_json()
+
+        if "username" in session:
+            pid = int(data.get("pid"))
+            title = str(data.get("title"))
+            description = str(data.get("description"))
+            tags = str(data.get("tagStrings"))
+
+            s.playlist.PlaylistService.updatePlaylist(pid, title, description, s.playlist.PlaylistService.tagsToTagList(tags))
+            return jsonify({'status': 'success'})
+        
     #Alle Routen ausgeben (nur zum Testen)
     with app.test_request_context():
         print(url_for('views.start'))
@@ -85,3 +106,5 @@ def create_app():
         print(url_for('static', filename='style.css'))
 
     return app
+
+

@@ -1,7 +1,52 @@
 {% extends 'wrappers/headerAndFooter.html' %}
 
-{% block title %}Profile of {{ username }}{% endblock %}
+{% block title %}Profile{% endblock %}
 
 {% block content %}
-    <h1>{{ username }}</h1>
+<h2>Hello, {{ current_username }}</h2>
+<div class="d-flex flex-column justify-content-between align-items-center my-5">
+    
+  <ul class="p-5">
+  {% for playlist in user_playlists %}
+  <div class="pt-sm-4"></div>
+   <a class="remove-style" href="../playlist/{{ playlist.id }}">
+    <div class="bg-gradient rounded-3 shadow">
+      <div class="p-3">
+        <h1>{{ playlist.title }}</h1>
+        <div class="d-flex flex-row">
+            <div class="center pe-md-1">
+                <img src="{{ url_for('static', filename='assets/' + playlist.platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
+            </div>
+            <a id = "{{ playlist.id }}" href="{{ playlist.link }}">Click here to listen!</a>
+        </div>
+
+      <div id="tag-descriptor">Tags:
+          {% for t in playlists[playlist.id] %}
+          <p class="badge bg-secondary">
+            <a class="remove-style" href="../search/{{ t[1].title }}" style="text-decoration: none; color:white">
+              {{ t[1].title }}
+          </p>
+          {% endfor %}
+        </div>
+        <p id="description">Description: {{ playlist.description }}</p>
+      </div>
+    </div>
+    <div>
+        <a class="remove-style" href="/editPlaylist/{{ playlist.id }}">
+            <button class="btn btn-primary">
+                Edit
+            </button>
+        </a>
+        
+            <button class="btn btn-danger " onclick="deletePlaylist('{{ playlist.id }}')">
+                Delete
+            </button>
+        
+    </div>
+  </a>
+  {% endfor %}
+        </ul>
+    </div>
+
+
 {% endblock %}

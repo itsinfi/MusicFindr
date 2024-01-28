@@ -1,23 +1,29 @@
-
-from flask import render_template
+from flask import render_template, session
+from app.services.playlistService import PlaylistService as p
+from app.services import tagService as t
 from app.services import userService
+from app.services import voteService
 
 class ProfileView():
     @staticmethod
-    def loadPage(uid: int) -> render_template:
-        from app.services import userService
-        from datetime import datetime
+    def loadPage():
+        current_username = userService.UserService.getSessionUsername()
+        current_user = userService.UserService.getUserViaUsername(current_username)
 
-        # TODO:remove later
-        try:
-            userService.UserService._createUser(2, "blaB223#981273_", "nutzernameeeee", datetime.now(), datetime.now())
-        except userService.UserServiceError as e:
-            print(e)
+        # Alle Playlists des aktuellen Benutzers abrufen
+        user_playlists = p.getUserPlaylists(current_user.id)
 
-        try:
-            result = userService.UserService.readUser(int(uid))
-            return render_template('content/profile.html', username = result.username, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
-        except userService.UserServiceError as e:
-            raise e
+        
+
+        playlists = {}
+        for playlist in user_playlists:
+            playlistTagTuples = []
+            for tagID in playlist.tags:
+                tag = t.TagService.readTag(tagID)
+                playlistTagTuples.append((playlist.id, tag))
+            playlists[playlist.id] = sorted(playlistTagTuples, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True)
+
+        
+        return render_template('content/profile.html', user_playlists=user_playlists, playlists=playlists, current_user = current_user, current_username = current_username, loggedin=userService.UserService.checkCurrentUserIsLoggedIn(), isStartPage=True)
 
 

@@ -83,3 +83,29 @@ function vote(tid, pid, voteValue) {
     var data = JSON.stringify({ tid: tid, pid: pid, voteValue: voteValue })
     request.send(data)
 }
+
+function deletePlaylist(pid) {
+    var request = new XMLHttpRequest()
+    request.open("POST", "/deletePlaylist", true)
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+
+    request.onload = function () {
+        location.reload();
+    };
+
+    var data = JSON.stringify({ pid: pid })
+    request.send(data)
+}
+
+function updatePlaylist(pid, title, description, tagStrings) {
+    var request = new XMLHttpRequest()
+    request.open("POST", "/updatePlaylist", true)
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+
+    request.onload = function () {
+        location.reload();
+    };
+
+    var data = JSON.stringify({ pid: pid, title: title, description: description, tagStrings: tagStrings })
+    request.send(data)
+}

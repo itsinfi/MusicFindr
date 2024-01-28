@@ -32,11 +32,10 @@
         <ul class="p-5">
   {% for playlist in shuffled_playlist %}
   <div class="pt-sm-4"></div>
- <a class="remove-style" href="../playlist/{{ playlist.id }}">
+   <a class="remove-style" href="../playlist/{{ playlist.id }}">
     <div class="bg-gradient rounded-3 shadow">
       <div class="p-3">
         <h1>{{ playlist.title }}</h1>
-
         <div class="d-flex flex-row">
             <div class="center pe-md-1">
                 <img src="{{ url_for('static', filename='assets/' + playlist.platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">

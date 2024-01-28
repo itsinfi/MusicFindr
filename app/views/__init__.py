@@ -8,6 +8,8 @@ from app.views import editProfileView
 from app.views import searchresults
 from app.views import playlistDetailView
 from app.views import submitPlaylistView
+from app.views import editPlaylistView
+
 
 from flask import Blueprint, app, render_template, request
 from markupsafe import escape
@@ -22,9 +24,9 @@ def start():
     return startPage.StartPage.getDiscoverarea()
 
 
-@blueprint.route('/profile/<uid>')
-def profile(uid: int):
-    return profileView.ProfileView.loadPage(uid)
+@blueprint.route('/profile')
+def profile():
+    return profileView.ProfileView.loadPage()
 
 @blueprint.route('/signUp', methods = ['POST', 'GET'])
 def signUp():
@@ -55,3 +57,8 @@ def submitPlaylist():
 @blueprint.route('/search/<query>')
 def search(query):
     return searchresults.SearchResults.loadPage(query)
+
+@blueprint.route('/editPlaylist/<pid>', methods = ['POST', 'GET'])
+def editPlaylist(pid: int):
+    return editPlaylistView.EditPlaylistView.loadPage(pid)
+
