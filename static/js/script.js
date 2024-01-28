@@ -12,7 +12,7 @@ function navigateBack() {
 
 function search(ignoreKeyCodeCheck) {
     var searchfield = document.getElementById("searchbar").value.trim()
-    if (ignoreKeyCodeCheck || event.keyCode === 13 && searchfield !== "") {
+    if ((ignoreKeyCodeCheck || event.keyCode === 13) && searchfield !== "") {
         var url = window.location.href+/search/+searchfield
         var win = window.open(url, '_self');  win.focus();
     }
