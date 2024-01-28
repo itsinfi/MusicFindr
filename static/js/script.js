@@ -61,10 +61,8 @@ function toggleTagsForm(){
 
 function addTagsToPlaylist(pid, ignoreKeyCodeCheck) {
 
-    var searchfield = document.getElementById("newTags").value.trim()
-    if ((ignoreKeyCodeCheck || event.keyCode === 13) && searchfield !== "") { 
-
-        var tagStrings = document.getElementById('newTags').value
+    var tagStrings = document.getElementById("newTags").value.trim()
+    if ((ignoreKeyCodeCheck || event.keyCode === 13) && tagStrings !== "") { 
 
         request = new XMLHttpRequest()
         request.open("POST", "/addTagsToPlaylist", true)
