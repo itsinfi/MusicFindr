@@ -35,10 +35,26 @@ function toggleTagsForm(){
         
         document.getElementById("toggleButton").textContent = "-";
 
+        document.getElementById("add-tags-description").style.display = "block";
+
+        document.getElementById("add-tags-box").style.display = "block";
+
+        document.getElementById("add-tags-description").style.backgroundColor = "black";
+        document.getElementById("add-tags-description").style.width = "600px";
+        document.getElementById("add-tags-description").style.borderRadius = "25px"
+        document.getElementById("add-tags-description").style.padding = "10px"
+        
+
+
+
     } else{
         document.getElementById("add-tags").style.display = "";
         
         document.getElementById("toggleButton").textContent = "+";
+
+        document.getElementById("add-tags-description").style.display = "";
+
+        document.getElementById("add-tags-box").style.display = "";
     }
 }
 

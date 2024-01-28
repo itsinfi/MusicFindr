@@ -43,3 +43,11 @@ body {
     display : none;
     margin-right: 10px;
 }
+
+#add-tags-description {
+    display : none;
+}
+
+#add-tags-box {
+    display : none;
+}

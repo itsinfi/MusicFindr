@@ -50,12 +50,23 @@
     </div>
     
     {% if loggedin %}
-        <div id="add-tags">
-            <!-- <form class="form-popup" onsubmit="addTagsToPlaylist('{{ pid }}')"> -->
-            <input id="newTags" class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required onkeydown="addTagsToPlaylist('{{ pid }}')">
-            <button class="btn btn-primary" onclick="addTagsToPlaylist('{{ pid }}')">Submit</button>
-            <!-- </form> -->
+        <div id = "add-tags-box">
+            <div id="add-tags">
+                <!-- <form class="form-popup" onsubmit="addTagsToPlaylist('{{ pid }}')"> -->
+                <input id="newTags" class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required onkeydown="addTagsToPlaylist('{{ pid }}')">
+                <button class="btn btn-primary" onclick="addTagsToPlaylist('{{ pid }}')">Submit</button>
+                <!-- </form> -->
+            </div>
+    
+            <div id="add-tags-description">
+                <p>You can contribute additional tags here.<br>
+                Other users will be able to see and vote for or against them.<br>
+                Please only add suitable tags that aid in describing this playlist and help other users to find what they're looking for.</p>
+    
+            </div>
         </div>
+        
+        
     {% endif %}
 
     <p id="description">Description: {{ description }}</p>
