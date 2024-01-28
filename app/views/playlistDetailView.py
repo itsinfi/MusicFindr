@@ -8,7 +8,10 @@ class PlaylistDetailView():
     @staticmethod
     def loadPage(pid: int) -> render_template:
         try:
+            #Playlist lesen
             playlist = playlistService.PlaylistService.readPlaylist(int(pid))
+
+            #Tags lesen
             tags = []
             for t in playlist.tags:
                 try:
@@ -17,6 +20,8 @@ class PlaylistDetailView():
                     print(e)
                     continue
                 tags.append((playlist.id, tag))
+            
+            #Votes lesen
             votes = {}
             if "username" in session:
                 for playlistTagTuple in tags:
@@ -28,8 +33,16 @@ class PlaylistDetailView():
             else:
                 for playlistTagTuple in tags:
                     votes[playlistTagTuple[1].id] = 0
+            
+            #CreatedBy auslesen
+            try:
+                user = userService.UserService.readUser(playlist.createdBy)
+                createdBy = user.username
+            except userService.UserServiceError as e:
+                createdBy = "unknown"
 
+            #Falls Playlist nicht gefunden
         except  playlistService.PlaylistServiceError as e:
             raise e
 
-        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, platform = playlist.platform, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
+        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, platform = playlist.platform, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, createdBy = createdBy, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())

@@ -7,15 +7,18 @@
     <div class="d-flex flex-column justify-content-between align-items-center my-5">
    
         <!-- Hier ist die Suchleiste -->
-        <div class="shadow">
-          <input style="width: 500px" class="input-group-text" type="text" name="query" placeholder="Search for a genre, topic, mood..." id="searchbar" onkeydown="search()">
+        <div>
+          <div class="d-flex flex-row shadow input-group">
+            <input style="width: 450px" class="input-group-text" type="text" name="query" placeholder="Search for a genre, topic, mood..." id="searchbar" onkeydown="search(false)">
+            <button class="btn btn-primary" onclick="search(true)">Search</button>
+          </div>
         </div>
         <!-- <input type="submit" value="Search" onclick="search()"> -->
         <div style="margin-bottom: 30px;"></div>
         <div>
         {% for tag in random_tags %}
         <p class="badge bg-secondary">
-         <a class="remove-style" href="../search/{{ tag.title }}" style="text-decoration: none; color: white">{{ tag.title }}</a>
+          <a class="remove-style" href="../search/{{ tag.title }}" style="text-decoration: none; color: white">{{ tag.title }}</a>
         </p>
         {% endfor %}
         </div>
@@ -41,7 +44,7 @@
             <div class="center pe-md-1">
                 <img src="{{ url_for('static', filename='assets/' + playlist.platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
             </div>
-            <a id = "{{ pid }}" href="{{ playlist.link }}">Click here to listen!</a>
+            <a id = "{{ pid }}" href="{{ playlist.link }}" target="_blank">Click here to listen!</a>
         </div>
 
       <div id="tag-descriptor">Tags:

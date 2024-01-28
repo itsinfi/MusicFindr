@@ -5,11 +5,12 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
+    <p>Created by: {{ createdBy }}</p>
     <div class="d-flex flex-row">
         <div class="center pe-md-1">
             <img src="{{ url_for('static', filename='assets/' + platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
         </div>
-        <a id = "{{ pid }}" href="{{ link }}">Click here to listen!</a>
+        <a id = "{{ pid }}" href="{{ link }}" target="_blank">Click here to listen!</a>
     </div>
     <div id="tag-descriptor">Tags:
         {% for playlistTagTuple in tags %}

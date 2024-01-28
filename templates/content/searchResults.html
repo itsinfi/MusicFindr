@@ -13,7 +13,7 @@
             <div class="center pe-md-1">
                 <img src="{{ url_for('static', filename='assets/' + playlist.platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
             </div>
-            <a id = "{{ pid }}" href="{{ playlist.link }}">Click here to listen!</a>
+            <a id = "{{ pid }}" href="{{ playlist.link }}" target="_blank">Click here to listen!</a>
         </div>
 
       <div id="tag-descriptor">Tags:
