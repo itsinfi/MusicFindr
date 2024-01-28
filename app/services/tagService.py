@@ -220,3 +220,5 @@ class TagService:
         Gibt eine Liste mit drei zufälligen Tags zurück.
         """
         return sample(TagService.allTags, min(3, len(TagService.allTags)))
+
+    
