@@ -4,83 +4,94 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ title }}</h1>
-    <p>Created by: {{ createdBy }}</p>
-    <div class="d-flex flex-row">
-        <div class="center pe-md-1">
-            <img src="{{ url_for('static', filename='assets/' + platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
-        </div>
-        <a id = "{{ pid }}" href="{{ link }}" target="_blank">Click here to listen!</a>
+    <div class="p-5">
+        <div style="background-color: rgb(0, 0, 0, 0.333); border-radius: 40px;" class="pt-md-5 px-md-5 pb-md-3 mb-2">
+            <h1 style=" font-weight: bold;">{{ title }}</h1>
+            <p class="">Created by: {{ createdBy }}</p>
+            <div class="d-flex flex-row pb-md-4">
+                <div class="center pe-md-1">
+                    <img src="{{ url_for('static', filename='assets/' + platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
+                </div>
+                <a id = "{{ pid }}" href="{{ link }}" target="_blank">Click here to listen!</a>
+            </div>
     </div>
-    <div id="tag-descriptor">Tags:
-        {% for playlistTagTuple in tags %}
-        <p class="badge bg-secondary">
-
-            {% if loggedin %}
-                {% if votes[playlistTagTuple[1].id] == -1 %}
-                    <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
-                        <i class="text-danger fas fa-arrow-down"></i>
-                    </button>
-                    {% else %}
-                    <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '-1')" title="Vote against this tag!">
-                        <i class="text-light-emphasis fas fa-arrow-down"></i>
-                    </button>
-                {% endif %}
-            {% endif %}
         
-            <a class="remove-style" href="/search/{{ playlistTagTuple[1].title }}" style="text-decoration: none; color: white">{{ playlistTagTuple[1].title }}</a>
+    
+    <div style="background-color: rgb(0, 0, 0, 0.333); border-radius: 40px;" class="pt-md-4 px-md-5 pb-md-4">
+        <div id="tag-descriptor">Tags:
+            {% for playlistTagTuple in tags %}
+            <p class="badge bg-secondary">
+    
+                {% if loggedin %}
+                    {% if votes[playlistTagTuple[1].id] == -1 %}
+                        <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
+                            <i class="text-danger fas fa-arrow-down"></i>
+                        </button>
+                        {% else %}
+                        <button class="transparent-button pe-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '-1')" title="Vote against this tag!">
+                            <i class="text-light-emphasis fas fa-arrow-down"></i>
+                        </button>
+                    {% endif %}
+                {% endif %}
             
-            {% if loggedin %}
-                {% if votes[playlistTagTuple[1].id] == 1 %}
-                    <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
-                        <i class="text-primary fas fa-arrow-up"></i>
-                    </button>
-                {% else %}
-                    <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '1')" title="Vote for this tag!">
-                        <i class="text-light-emphasis fas fa-arrow-up"></i>
-                    </button>
+                <a class="remove-style" href="/search/{{ playlistTagTuple[1].title }}" style="text-decoration: none; color: white">{{ playlistTagTuple[1].title }}</a>
+                
+                {% if loggedin %}
+                    {% if votes[playlistTagTuple[1].id] == 1 %}
+                        <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '0')" title="Remove vote!">
+                            <i class="text-primary fas fa-arrow-up"></i>
+                        </button>
+                    {% else %}
+                        <button class="transparent-button ps-md-1" onclick="vote('{{ playlistTagTuple[1].id }}', '{{ pid }}', '1')" title="Vote for this tag!">
+                            <i class="text-light-emphasis fas fa-arrow-up"></i>
+                        </button>
+                    {% endif %}
                 {% endif %}
+            </p>
+            {% endfor %}
+    
+            {% if loggedin %}
+                <!-- additional tags button and form -->
+                <button id="toggleButton" class="btn btn-primary badge" onclick="toggleTagsForm()">+</button>
             {% endif %}
-        </p>
-        {% endfor %}
-
-        {% if loggedin %}
-            <!-- additional tags button and form -->
-            <button id="toggleButton" class="btn btn-primary badge" onclick="toggleTagsForm()">+</button>
-        {% endif %}
-    </div>
-    
-    {% if loggedin %}
-        <div id = "add-tags-box">
-            <div id="add-tags">
-                <!-- <form class="form-popup" onsubmit="addTagsToPlaylist('{{ pid }}')"> -->
-                <input id="newTags" class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required onkeydown="addTagsToPlaylist('{{ pid }}', false)">
-                <button class="btn btn-primary" onclick="addTagsToPlaylist('{{ pid }}', true)">Submit</button>
-                <!-- </form> -->
-            </div>
-    
-            <div id="add-tags-description">
-                <p>You can contribute additional tags here.<br>
-                Other users will be able to see and vote for or against them.<br>
-                Please only add suitable tags that aid in describing this playlist and help other users to find what they're looking for.</p>
-    
-            </div>
         </div>
         
+        {% if loggedin %}
+            <div id = "add-tags-box">
+                <div id="add-tags">
+                    <!-- <form class="form-popup" onsubmit="addTagsToPlaylist('{{ pid }}')"> -->
+                    <input id="newTags" class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required onkeydown="addTagsToPlaylist('{{ pid }}', false)">
+                    <button class="btn btn-primary" onclick="addTagsToPlaylist('{{ pid }}', true)">Submit</button>
+                    <!-- </form> -->
+                </div>
         
-    {% endif %}
-
-    <p id="description">Description: {{ description }}</p>
-
-
-    {% if platform == "soundcloud" %}
-        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="{{ 'https://w.soundcloud.com/player/?url=' + link }}"></iframe>
-    {% endif %}
-
-    {% if platform == "spotify" %}
-    <div class="center">
-        <iframe src="{{ embeddedLink }}" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+                <div id="add-tags-description">
+                    <p>You can contribute additional tags here.<br>
+                    Other users will be able to see and vote for or against them.<br>
+                    Please only add suitable tags that aid in describing this playlist and help other users to find what they're looking for.</p>
+        
+                </div>
+            </div>
+            
+            
+        {% endif %}
+    
+        <p id="description">{{ description }}</p>
     </div>
+    
+    {% if platform == "spotify" or platform == "soundcloud" %}
+        <div style="background-color: rgb(0, 0, 0, 0.333); border-radius: 40px;" class="p-5 mt-2">
+            {% if platform == "soundcloud" %}
+                <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="{{ 'https://w.soundcloud.com/player/?url=' + link }}"></iframe>
+            {% endif %}
+        
+            {% if platform == "spotify" %}
+            <div class="center d-flex">
+                <iframe style="border-radius: 30px;" class="flex-grow" src="{{ embeddedLink }}" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+            </div>
+            {% endif %}
+        </div>
     {% endif %}
+    </div>
 
 {% endblock %}

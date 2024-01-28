@@ -7,11 +7,11 @@
     <div class="d-flex flex-column justify-content-between align-items-center my-5">
    
         <!-- Hier ist die Suchleiste -->
-        <div>
-          <div class="d-flex flex-row shadow input-group">
-            <input style="width: 450px" class="input-group-text" type="text" name="query" placeholder="Search for a genre, topic, mood..." id="searchbar" onkeydown="search(false)">
-            <button class="btn btn-primary" onclick="search(true)">Search</button>
-          </div>
+        <div class="custom-glow-5 d-flex flex-row">
+          <input style="width: 500px; height: 45px; background-color: rgba(0, 0, 0, 0.633);color: white; border-radius: 30px 0 0 30px; border-style: solid; border-color: rgb(109, 109, 109);" class="input-group-text" type="text" name="query" placeholder="Search for a genre, topic, mood..." id="searchbar" onkeydown="search(false)">
+          <button style="color: rgba(0, 0, 0, 0.633); border-radius: 0 30px 30px 0; border-style: solid; border-color: rgb(109, 109, 109);" class="btn btn-primary" onclick="search(true)">
+            <i style="width: 20px;" class="fas fa-search pe-md-1"> </i>
+          </button>
         </div>
         <!-- <input type="submit" value="Search" onclick="search()"> -->
         <div style="margin-bottom: 30px;"></div>
@@ -22,7 +22,7 @@
         </p>
         {% endfor %}
         </div>
-        <div style="margin-bottom: 400px;"></div>
+        <div style="margin-bottom: 300px;"></div>
 
         <div class="arrow-down"></div>
         <div style="margin-bottom: 0px;"></div>
@@ -35,8 +35,8 @@
         <ul class="p-5">
   {% for playlist in shuffled_playlist %}
   <div class="pt-sm-4"></div>
-   <a class="remove-style" href="../playlist/{{ playlist.id }}">
-    <div class="bg-gradient rounded-3 shadow">
+ <a class="remove-style" href="../playlist/{{ playlist.id }}">
+    <div style="border-radius: 25px;" class="bg-gradient shadow">
       <div class="p-3">
         <h1>{{ playlist.title }}</h1>
         <div class="d-flex flex-row">

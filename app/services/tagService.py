@@ -219,6 +219,20 @@ class TagService:
         """
         Gibt eine Liste mit drei zufälligen Tags zurück.
         """
-        return sample(TagService.allTags, min(3, len(TagService.allTags)))
-
+        tags = TagService.getListOfAllSearchableTags()
+        return sample(tags, min(3, len(tags)))
+    
+    @staticmethod
+    def getListOfAllSearchableTags():
+        from app.services import playlistService as p
+        """
+        Gibt eine Liste aller suchbaren Tags aus.
+        """
+        tags = []
+        for tag in TagService.allTags:
+            for playlist in p.PlaylistService.allPlaylists:
+                if tag.id in playlist.tags:
+                    tags.append(tag)
+                    continue
+        return tags
     

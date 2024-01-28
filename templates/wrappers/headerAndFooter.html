@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<header class="bg-dark position-relative d-flex justify-content-center align-items-center">
+<header class="position-relative d-flex justify-content-center align-items-center">
 
 
     {% if isStartPage and not hidebutton and loggedin %}
@@ -21,10 +21,10 @@
     {% endif %}
 
 
-    <div>
+    <div class="mt-5 mb-2">
         <a class="remove-style" href="/">
             <h1 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-size: 60px;" class="h1">
-                MusicFindr
+                <img src="/static/assets/musicfindrLogo.png"/ alt="MusicFindr" title="MusicFindr" height="85pt" class="custom-dropshadow-15">
             </h1>
         </a>
         
@@ -71,7 +71,7 @@
     {% block content %}{% endblock %}
 
 </main>
-<footer style="opacity: 0.8;" class="bg-dark text-light text-center pb-sm-1 pt-sm-3 sticky-bottom rounded-top-3 shadow">
+<footer style="opacity: 0.8; border-radius: 30px 30px 0 0;" class="bg-dark text-light text-center pb-sm-1 pt-sm-3 sticky-bottom shadow">
     <div class="container">
         <p style="opacity: 0.6;" class="text-light">&copy;2024 masters of designing but not thinking.</p>
     </div>
