@@ -44,5 +44,10 @@ class PlaylistDetailView():
             #Falls Playlist nicht gefunden
         except  playlistService.PlaylistServiceError as e:
             raise e
+        
+        embeddedLink = False
+        if (playlist.platform == "spotify"):
+            playlistID = playlist.link.split('/')[-1].split('?')[0]
+            embeddedLink = f"https://open.spotify.com/embed/playlist/{playlistID}"
 
-        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, platform = playlist.platform, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, createdBy = createdBy, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
+        return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, platform = playlist.platform, embeddedLink = embeddedLink, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, createdBy = createdBy, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())
