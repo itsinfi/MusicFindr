@@ -54,8 +54,8 @@
         <div id = "add-tags-box">
             <div id="add-tags">
                 <!-- <form class="form-popup" onsubmit="addTagsToPlaylist('{{ pid }}')"> -->
-                <input id="newTags" class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required onkeydown="addTagsToPlaylist('{{ pid }}')">
-                <button class="btn btn-primary" onclick="addTagsToPlaylist('{{ pid }}')">Submit</button>
+                <input id="newTags" class="input-group-text" type="text"  placeholder="tag1, tag2, ..." name="additionalTags" required onkeydown="addTagsToPlaylist('{{ pid }}', false)">
+                <button class="btn btn-primary" onclick="addTagsToPlaylist('{{ pid }}', true)">Submit</button>
                 <!-- </form> -->
             </div>
     

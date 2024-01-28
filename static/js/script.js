@@ -59,10 +59,10 @@ function toggleTagsForm(){
 }
 
 
-function addTagsToPlaylist(pid) {
+function addTagsToPlaylist(pid, ignoreKeyCodeCheck) {
 
     var searchfield = document.getElementById("newTags").value.trim()
-    if (event.keyCode === 13 && searchfield !== "") { 
+    if ((ignoreKeyCodeCheck || event.keyCode === 13) && searchfield !== "") { 
 
         var tagStrings = document.getElementById('newTags').value
 
