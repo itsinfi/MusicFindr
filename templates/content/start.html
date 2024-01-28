@@ -1,64 +1,98 @@
+{% extends 'wrappers/headerAndFooter.html' %} {% block title %}Start Page{%
+endblock %} {% block content %}
+<div class="d-flex flex-column justify-content-between align-items-center my-5">
+  <!-- Hier ist die Suchleiste -->
+  <div class="custom-glow-5">
+    <input
+      style="
+        width: 500px;
+        height: 45px;
+        background-color: rgba(0, 0, 0, 0.633);
+        color: white;
+        border-radius: 30px;
+        border-style: solid;
+        border-color: rgb(109, 109, 109);
+      "
+      class="input-group-text"
+      type="text"
+      name="query"
+      placeholder="Search for a genre, topic, mood..."
+      id="searchbar"
+      onkeydown="search()"
+    />
+  </div>
+  <!-- <input type="submit" value="Search" onclick="search()"> -->
 
-{% extends 'wrappers/headerAndFooter.html' %}
+  <div style="margin-bottom: 30px"></div>
 
-{% block title %}Start Page{% endblock %}
+  <div>
+    {% for tag in random_tags %}
+    <p class="badge bg-secondary">
+      <a
+        class="remove-style"
+        href="../search/{{ tag.title }}"
+        style="text-decoration: none; color: white"
+        >{{ tag.title }}</a
+      >
+    </p>
+    {% endfor %}
+  </div>
 
-{% block content %}
-    <div class="d-flex flex-column justify-content-between align-items-center my-5">
-   
-        <!-- Hier ist die Suchleiste -->
-        <div class="shadow">
-          <input style="width: 500px" class="input-group-text" type="text" name="query" placeholder="Search for a genre, topic, mood..." id="searchbar" onkeydown="search()">
-        </div>
-        <!-- <input type="submit" value="Search" onclick="search()"> -->
-        <div style="margin-bottom: 30px;"></div>
-        <div>
-        {% for tag in random_tags %}
-        <p class="badge bg-secondary">
-         <a class="remove-style" href="../search/{{ tag.title }}" style="text-decoration: none; color: white">{{ tag.title }}</a>
-        </p>
-        {% endfor %}
-        </div>
-        <div style="margin-bottom: 400px;"></div>
+  <!-- spacer -->
+  <div style="margin-bottom: 300px"></div>
 
-        <div class="arrow-down"></div>
-        <div style="margin-bottom: 0px;"></div>
-        <!--drop-down menü-->
-        <!-- <select name="playlist_order" id="playlist_order" onchange="playlist_order()">
-            <option value="shuffled">shuffled</option>
-            <option value="sorted">sorted</option>
-        </select>
-        <div style="margin-bottom: 20px;"></div>  -->
-        <ul class="p-5">
-  {% for playlist in shuffled_playlist %}
-  <div class="pt-sm-4"></div>
- <a class="remove-style" href="../playlist/{{ playlist.id }}">
-    <div style="border-radius: 25px;" class="bg-gradient shadow">
-      <div class="p-3">
-        <h1>{{ playlist.title }}</h1>
+  <div class="arrow-down"></div>
 
-        <div class="d-flex flex-row">
+  <!-- spacer -->
+  <div style="margin-bottom: 0px"></div>
+
+  <!--drop-down menü-->
+  <!-- <select name="playlist_order" id="playlist_order" onchange="playlist_order()">
+          <option value="shuffled">shuffled</option>
+          <option value="sorted">sorted</option>
+      </select>
+      <div style="margin-bottom: 20px;"></div>  -->
+
+  <ul class="p-5">
+    {% for playlist in shuffled_playlist %}
+    <div class="pt-sm-4"></div>
+    <a class="remove-style" href="../playlist/{{ playlist.id }}">
+      <div style="border-radius: 25px" class="bg-gradient shadow">
+        <div class="p-3">
+          <h1>{{ playlist.title }}</h1>
+
+          <div class="d-flex flex-row">
             <div class="center pe-md-1">
-                <img src="{{ url_for('static', filename='assets/' + playlist.platform + '.png') }}" alt="{{ platform }}" style="max-width: 16px; max-height: 16px;">
+              <img
+                src="{{ url_for('static', filename='assets/' + playlist.platform + '.png') }}"
+                alt="{{ platform }}"
+                style="max-width: 16px; max-height: 16px"
+              />
             </div>
-            <a id = "{{ pid }}" href="{{ playlist.link }}">Click here to listen!</a>
-        </div>
+            <a id="{{ pid }}" href="{{ playlist.link }}"
+              >Click here to listen!</a
+            >
+          </div>
 
-      <div id="tag-descriptor">Tags:
-          {% for t in playlists[playlist.id] %}
-          <p class="badge bg-secondary">
-            <a class="remove-style" href="../search/{{ t[1].title }}" style="text-decoration: none; color:white">
-              {{ t[1].title }}
-          </p>
-          {% endfor %}
+          <div id="tag-descriptor">
+            Tags: {% for t in playlists[playlist.id] %}
+            <p class="badge bg-secondary">
+              <a
+                class="remove-style"
+                href="../search/{{ t[1].title }}"
+                style="text-decoration: none; color: white"
+              >
+                {{ t[1].title }}
+              </a>
+            </p>
+            {% endfor %}
+          </div>
+          <p id="description">Description: {{ playlist.description }}</p>
         </div>
-        <p id="description">Description: {{ playlist.description }}</p>
       </div>
-    </div>
-  </a>
-  {% endfor %}
-        </ul>
-    </div>
-
+    </a>
+    {% endfor %}
+  </ul>
+</div>
 
 {% endblock %}
