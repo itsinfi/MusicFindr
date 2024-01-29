@@ -6,6 +6,10 @@ class EditPlaylistView():
     def loadPage(playlist_id: int) -> render_template:
         if userService.UserService.checkCurrentUserIsLoggedIn():
             existing_playlist = playlistService.PlaylistService.readPlaylist(int (playlist_id))
+
+            if (session["userId"] != existing_playlist.createdBy):
+                return redirect("/")
+
             tags = []
             for t in existing_playlist.tags:
                 try:

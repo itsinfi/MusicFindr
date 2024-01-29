@@ -1,3 +1,4 @@
+import re
 from app.services import playlistService
 from app.services import tagService
 from app.services import userService
@@ -49,5 +50,11 @@ class PlaylistDetailView():
         if (playlist.platform == "spotify"):
             playlistID = playlist.link.split('/')[-1].split('?')[0]
             embeddedLink = f"https://open.spotify.com/embed/playlist/{playlistID}"
+        if (playlist.platform == "youtube"):
+            url = playlist.link.split("playlist?list=", 1)
+            embeddedLink = f"{url[0]}embed/playlist?list={url[1]}"
+        if (playlist.platform == "youtubemusic"):
+            url = playlist.link.split("playlist?list=", 1)
+            embeddedLink = f"https://youtube.com/embed/playlist?list={url[1]}"
 
         return render_template('content/playlistDetail.html', pid = playlist.id, title = playlist.title, description = playlist.description, link = playlist.link, platform = playlist.platform, embeddedLink = embeddedLink, tags = sorted(tags, key = voteService.VoteService.getVoteNumberOnPlaylistTag, reverse = True), votes = votes, createdBy = createdBy, loggedin=userService.UserService.checkCurrentUserIsLoggedIn())

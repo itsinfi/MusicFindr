@@ -80,6 +80,11 @@ def create_app():
 
         if "username" in session:
             pid = int(data.get("pid"))
+
+            playlist = s.playlist.PlaylistService.readPlaylist(pid)
+            
+            if (int(session["userId"]) != playlist.createdBy):
+                return
             
             s.playlist.PlaylistService.deletePlaylist(pid)
             return jsonify({'status': 'success'})
@@ -93,6 +98,11 @@ def create_app():
             title = str(data.get("title"))
             description = str(data.get("description"))
             tags = str(data.get("tagStrings"))
+
+            playlist = s.playlist.PlaylistService.readPlaylist(pid)
+
+            if (int(session["userId"]) != playlist.createdBy):
+                return
 
             s.playlist.PlaylistService.updatePlaylist(pid, title, description, s.playlist.PlaylistService.tagsToTagList(tags))
             return jsonify({'status': 'success'})
